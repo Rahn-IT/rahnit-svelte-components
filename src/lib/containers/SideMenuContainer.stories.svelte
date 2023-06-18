@@ -3,7 +3,7 @@
 	import SideMenuContainer from './SideMenuContainer.svelte';
 </script>
 
-<Meta title="SideMenuContainer" component={SideMenuContainer} />
+<Meta title="Containers/SideMenuContainer" component={SideMenuContainer} />
 
 <Template let:args>
 	<div class="h-screen">

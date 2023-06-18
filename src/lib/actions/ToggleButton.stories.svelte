@@ -5,7 +5,7 @@
 	import CloseIcon from '@iconify-icons/mdi/close';
 </script>
 
-<Meta title="ToggleButton" component={ToggleButton} />
+<Meta title="Actions/ToggleButton" component={ToggleButton} />
 
 <Template let:args>
 	<div class="h-screen">

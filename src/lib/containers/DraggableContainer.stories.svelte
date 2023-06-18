@@ -9,7 +9,7 @@
 	items = items;
 </script>
 
-<Meta title="DraggableContainer" component={DraggableContainer} />
+<Meta title="Containers/DraggableContainer" component={DraggableContainer} />
 
 <Template let:args>
 	<div class="h-screen">

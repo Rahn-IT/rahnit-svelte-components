@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Icon, { type IconifyIcon } from '@iconify/svelte/dist/OfflineIcon.svelte';
+	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
+	import type { IconifyIcon } from '@iconify/types';
 
 	export let value = false;
 	export let on_icon: string | IconifyIcon;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ToggleButton from '../actions/ToggleButton.svelte';
 	import MenuIcon from '@iconify-icons/mdi/menu';
-	import OpenIcon from '@iconify-icons/mdi/close';
+	import CloseIcon from '@iconify-icons/mdi/close';
 
 	let leftOpen = false;
 	let rightOpen = false;
@@ -16,7 +16,7 @@
 				</div>
 
 				<div class="absolute -right-16 top-4 z-10">
-					<ToggleButton bind:value={leftOpen} off_icon={MenuIcon} on_icon={OpenIcon} />
+					<ToggleButton bind:value={leftOpen} off_icon={MenuIcon} on_icon={CloseIcon} />
 				</div>
 			</div>
 		{/if}
@@ -32,7 +32,7 @@
 				</div>
 
 				<div class="absolute -left-16 top-4 z-10">
-					<ToggleButton bind:value={rightOpen} off_icon={MenuIcon} on_icon={OpenIcon} />
+					<ToggleButton bind:value={rightOpen} off_icon={MenuIcon} on_icon={CloseIcon} />
 				</div>
 			</div>
 		{/if}
