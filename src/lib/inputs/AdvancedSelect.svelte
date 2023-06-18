@@ -181,7 +181,11 @@
 	</div>
 
 	<!-- Dropdown -->
-	<div class="dropdown-content mt-1 flex w-full pl-4">
+	<div
+		class="dropdown-content mt-1 flex w-full overflow-hidden pl-4 {toRender.length > 0
+			? ''
+			: '!opacity-0'}"
+	>
 		<div
 			class="flex-1 cursor-pointer overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
 			style:height={toRender.length * 2.53 + 'rem'}
