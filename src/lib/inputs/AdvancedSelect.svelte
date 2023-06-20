@@ -47,7 +47,6 @@
 			if (search !== null) {
 				const result = await search(searchString);
 				items = result;
-				console.log('searching for', searchString, result);
 			}
 			if (actions !== null) {
 				actionList = await actions(searchString);
