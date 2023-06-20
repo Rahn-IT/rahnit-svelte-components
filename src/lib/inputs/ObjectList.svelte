@@ -89,6 +89,7 @@
 	{#if dragging !== null}
 		<div
 			class="fixed flex cursor-grabbing flex-row border-t border-base-300 py-1"
+			class:pointer-events-none={true}
 			in:receive={{ key: dragging }}
 			out:send={{ key: lastDragging }}
 			style:height={draggingHeight + 'px'}
@@ -111,9 +112,10 @@
 	<!-- Items -->
 	{#each items as item, index (itemKey(item))}
 		<div
+			class="pointer-events-auto"
 			animate:flip={{ duration: 200 }}
 			on:mouseenter={() => switchWith(index)}
-			style:height={draggingHeight + 'px'}
+			style:height={index === dragging ? draggingHeight + 'px' : ''}
 		>
 			{#if index !== dragging}
 				<div
