@@ -13,7 +13,9 @@
 
 	type T = $$Generic<any>;
 	export let items: T[];
-	export let itemKey: (item: T) => string = (item: T) => JSON.stringify(item);
+	export let itemKey: (item: T) => string = (item: T) => {
+		return JSON.stringify(item);
+	};
 	export let title = '';
 	export let create: () => Promise<T>;
 
@@ -44,8 +46,8 @@
 
 		if (event.currentTarget instanceof Element) {
 			const div = event.currentTarget.closest('div');
-			if (div !== null) {
-				const rect: DOMRect = div.getBoundingClientRect();
+			if (div !== null && div.parentElement !== null) {
+				const rect: DOMRect = div.parentElement.getBoundingClientRect();
 				draggingHeight = rect.height;
 				draggingWidth = rect.width;
 				dragging = index;
@@ -109,7 +111,11 @@
 
 	<!-- Items -->
 	{#each items as item, index (itemKey(item))}
-		<div animate:flip={{ duration: 200 }} on:mouseenter={() => switchWith(index)}>
+		<div
+			animate:flip={{ duration: 200 }}
+			on:mouseenter={() => switchWith(index)}
+			style:height={draggingHeight + 'px'}
+		>
 			{#if index !== dragging}
 				<div
 					class="flex flex-row border-t border-base-300 py-1"
@@ -132,8 +138,6 @@
 						<Icon icon={RemoveIcon} class="h-auto w-full" />
 					</button>
 				</div>
-			{:else}
-				<div style:height={draggingHeight + 'px'} style:width={draggingWidth + 'px'}>a</div>
 			{/if}
 		</div>
 	{/each}

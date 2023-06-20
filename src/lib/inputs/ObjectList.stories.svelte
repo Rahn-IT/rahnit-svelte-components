@@ -15,12 +15,17 @@
 			name: ''
 		};
 	}
+
+	function itemKey(item: TestItem): string {
+		console.log(item.id);
+		return item.id.toString();
+	}
 </script>
 
 <Meta title="Inputs/ObjectList" component={ObjectList} />
 
 <Template let:args>
-	<ObjectList {...args} {items} {create} let:index>
+	<ObjectList {...args} {items} {create} {itemKey} let:index>
 		<div class="flex w-full flex-col items-center justify-start">
 			<div>
 				{items[index].id}
