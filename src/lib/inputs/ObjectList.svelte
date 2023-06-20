@@ -54,7 +54,6 @@
 				lastDragging = dragging;
 				offsetX = event.x - rect.x;
 				offsetY = event.y - rect.y;
-				console.log(offsetX, offsetY);
 				follow(event);
 			}
 		}
