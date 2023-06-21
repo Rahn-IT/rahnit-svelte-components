@@ -181,7 +181,7 @@
 
 	<!-- Dropdown -->
 	<div
-		class="dropdown-content mt-1 flex w-full overflow-hidden pl-4 {toRender.length > 0
+		class="dropdown-content z-50 mt-1 flex w-full overflow-hidden pl-4 {toRender.length > 0
 			? ''
 			: '!opacity-0'}"
 	>

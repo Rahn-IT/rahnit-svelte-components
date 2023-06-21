@@ -17,7 +17,6 @@
 	}
 
 	function itemKey(item: TestItem): string {
-		console.log(item.id);
 		return item.id.toString();
 	}
 </script>
