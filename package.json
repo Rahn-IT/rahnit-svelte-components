@@ -1,6 +1,6 @@
 {
 	"name": "rahnit-svelte-components",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
@@ -23,7 +23,8 @@
 	"files": [
 		"dist",
 		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
+		"!dist/**/*.spec.*",
+		"!dist/**/*.stories.*"
 	],
 	"peerDependencies": {
 		"@tailwindcss/typography": "^0.5.9",
