@@ -181,9 +181,7 @@
 
 	<!-- Dropdown -->
 	<div
-		class="dropdown-content z-50 mt-1 flex w-full overflow-hidden pl-4 {toRender.length > 0
-			? ''
-			: '!opacity-0'}"
+		class="dropdown-content z-50 mt-1 flex w-full pl-4 {toRender.length > 0 ? '' : '!opacity-0'}"
 	>
 		<div
 			class="flex-1 cursor-pointer overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
