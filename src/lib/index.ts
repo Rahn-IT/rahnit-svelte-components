@@ -1,4 +1,4 @@
-// Reexport your entry components here
+export { default as SimpleSelect } from './inputs/SimpleSelect.svelte';
 export { default as ObjectList } from './inputs/ObjectList.svelte';
 export { default as AdvancedSelect } from './inputs/AdvancedSelect.svelte';
 export { default as StringInput } from './inputs/StringInput.svelte';
