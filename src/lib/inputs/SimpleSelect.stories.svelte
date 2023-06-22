@@ -64,6 +64,7 @@
 <Template let:args>
 	<SimpleSelect {...args} bind:selected />
 	{selected}
+	<SimpleSelect {...args} bind:selected />
 </Template>
 
 <Story
