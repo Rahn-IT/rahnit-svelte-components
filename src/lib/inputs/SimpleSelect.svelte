@@ -10,7 +10,6 @@
 	let selectedOption: Option<T> | null = null;
 	export let label = '';
 	export let optionKey: (option: T) => string = (option: T) => {
-		console.log(JSON.stringify(option));
 		return JSON.stringify(option);
 	};
 
@@ -21,7 +20,6 @@
 			return result;
 		}, {});
 		recheckSelected();
-		console.log(optionMap);
 	}
 
 	// functions for synchronizing the input and internals
@@ -38,9 +36,7 @@
 		}
 
 		const key = optionKey(selected);
-		console.log('key', key);
-		console.log('key', options[key]);
-		if (options[key] === undefined) {
+		if (optionMap[key] === undefined) {
 			selected = null;
 			selectedOption = null;
 		}
