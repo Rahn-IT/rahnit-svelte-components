@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { afterUpdate } from 'svelte';
 	import AdvancedSelect from './AdvancedSelect.svelte';
-	import type { Option, StringOptions } from './types.d.ts';
+	import type { Option } from './types.d.ts';
 
 	type T = $$Generic<any>;
 
@@ -19,40 +19,22 @@
 			result[optionKey(option.value)] = option;
 			return result;
 		}, {});
-		recheckSelected();
 	}
 
 	// functions for synchronizing the input and internals
-
-	function recheckSelected() {
-		if (ignoreUpdate) {
-			return;
-		}
-		ignoreUpdate = true;
-
-		if (selected === null) {
-			selectedOption = null;
-			return;
-		}
-
-		const key = optionKey(selected);
-		if (optionMap[key] === undefined) {
-			selected = null;
-			selectedOption = null;
-		}
-	}
 
 	let ignoreUpdate = false;
 	afterUpdate(() => (ignoreUpdate = false));
 
 	function updateSelectedFromUserInput(selectedOption: Option<T> | null) {
-		if (!ignoreUpdate) {
-			ignoreUpdate = true;
-			selected = selectedOption !== null ? selectedOption.value : null;
+		if (ignoreUpdate) {
+			return;
 		}
+		ignoreUpdate = true;
+		selected = selectedOption !== null ? selectedOption.value : null;
 	}
 
-	function updateSelectedOptionFromExternal(newSelected: T | null) {
+	function updateSelectedOptionFromExternal(newSelected: T | null, optionMap) {
 		if (ignoreUpdate) {
 			return;
 		}
@@ -73,7 +55,7 @@
 		selectedOption = optionMap[key];
 	}
 
-	$: updateSelectedOptionFromExternal(selected);
+	$: updateSelectedOptionFromExternal(selected, optionMap);
 	$: updateSelectedFromUserInput(selectedOption);
 
 	async function search(query: string): Promise<Option<T>[]> {
