@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { transform } from 'lodash';
-
 	import { crossfade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
@@ -70,6 +68,7 @@
 		}
 
 		[items[index], items[dragging], dragging] = [items[dragging], items[index], index];
+		lastDragging = dragging;
 		items = items;
 	}
 
@@ -78,7 +77,10 @@
 	}
 </script>
 
-<svelte:window on:mouseup={letGo} on:mousemove={follow} />
+<svelte:window
+	on:mouseup|capture|preventDefault={letGo}
+	on:mousemove|capture|preventDefault={follow}
+/>
 <div class="w-full">
 	<!-- Title -->
 	<div class="h-8 w-full rounded-t-xl bg-base-300 px-4 py-1 font-semibold">
