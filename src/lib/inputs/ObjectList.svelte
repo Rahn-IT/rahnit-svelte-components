@@ -9,6 +9,9 @@
 
 	const [send, receive] = crossfade({});
 
+	export let sortable = true;
+	export let editable = true;
+
 	type T = $$Generic<any>;
 	export let items: T[];
 	export let itemKey: (item: T) => string = (item: T) => {
@@ -125,36 +128,42 @@
 					in:receive={{ key: index }}
 					out:send={{ key: index }}
 				>
-					<button
-						class="w-12 cursor-grab p-1 opacity-30"
-						on:mousedown={(event) => grab(index, event)}
-					>
-						<Icon icon={DragIcon} class="h-auto w-full" />
-					</button>
+					{#if sortable}
+						<button
+							class="w-12 cursor-grab p-1 opacity-30"
+							on:mousedown={(event) => grab(index, event)}
+						>
+							<Icon icon={DragIcon} class="h-auto w-full" />
+						</button>
+					{/if}
 					<div class="flex flex-1 items-center justify-start pl-2">
 						<slot {item} {index} />
 					</div>
-					<button
-						class="w-12 cursor-pointer p-1 hover:text-error"
-						on:click={() => removeItem(index)}
-					>
-						<Icon icon={RemoveIcon} class="h-auto w-full" />
-					</button>
+					{#if editable}
+						<button
+							class="w-12 cursor-pointer p-1 hover:text-error"
+							on:click={() => removeItem(index)}
+						>
+							<Icon icon={RemoveIcon} class="h-auto w-full" />
+						</button>
+					{/if}
 				</div>
 			{/if}
 		</div>
 	{/each}
-	<div class="flex border-t border-base-300">
-		<div class="flex-1 py-3 pl-2">
-			<div class="flex w-full items-center justify-center">
-				<button
-					class="flex h-10 w-32 cursor-pointer justify-center rounded-md border border-secondary transition-all duration-500 hover:w-full hover:text-secondary-focus"
-					on:click={() => addItem()}
-				>
-					<Icon icon={AddIcon} class="h-full w-auto" />
-				</button>
+	{#if editable}
+		<div class="flex border-t border-base-300">
+			<div class="flex-1 py-3 pl-2">
+				<div class="flex w-full items-center justify-center">
+					<button
+						class="flex h-10 w-32 cursor-pointer justify-center rounded-md border border-secondary transition-all duration-500 hover:w-full hover:text-secondary-focus"
+						on:click={() => addItem()}
+					>
+						<Icon icon={AddIcon} class="h-full w-auto" />
+					</button>
+				</div>
 			</div>
+			<div class="w-12 p-1" />
 		</div>
-		<div class="w-12 p-1" />
-	</div>
+	{/if}
 </div>
