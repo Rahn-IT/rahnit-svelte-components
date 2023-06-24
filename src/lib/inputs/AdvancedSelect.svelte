@@ -55,7 +55,7 @@
 			console.error(error);
 		} finally {
 			loading = false;
-			selectedOptionIndex = -1;
+			selectedOptionIndex = items.length === 1 ? 0 : -1;
 		}
 	}
 
