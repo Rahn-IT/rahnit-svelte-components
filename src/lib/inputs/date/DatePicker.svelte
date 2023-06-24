@@ -27,11 +27,6 @@
 		value = value;
 	}
 
-	function setMonth(month: number) {
-		displayDate.setMonth(month);
-		displayDate = displayDate;
-	}
-
 	function incrementMonth() {
 		displayDate = new Date(displayDate.getFullYear(), displayDate.getMonth() + 1, 1);
 	}
@@ -39,14 +34,19 @@
 	function decrementMonth() {
 		displayDate = new Date(displayDate.getFullYear(), displayDate.getMonth() - 1, 1);
 	}
-
-	function setYear(year: number) {
+	$: updateDisplaydate(year, month);
+	function updateDisplaydate(year: number, month: number) {
+		if (ignoreUpdate) return;
+		ignoreUpdate = true;
 		displayDate.setFullYear(year);
+		displayDate.setMonth(month);
 		displayDate = displayDate;
 	}
 
 	$: updateInputs(displayDate);
-	function updateInputs(displayDate) {
+	function updateInputs(displayDate: Date) {
+		if (ignoreUpdate) return;
+		ignoreUpdate = true;
 		year = displayDate.getFullYear();
 		month = displayDate.getMonth();
 	}
@@ -100,7 +100,10 @@
 			{/each}
 			{#each Array.from({ length: daysThisMonth }, (_, index) => index + 1) as day}
 				<button
-					class="hover:text w-full rounded-md text-center transition-colors hover:bg-secondary hover:text-secondary-content focus:outline-none"
+					class="hover:text w-full rounded-md text-center transition-colors hover:bg-secondary hover:text-secondary-content focus:outline-none {displaySelectedDay &&
+					day === value?.getDate()
+						? 'bg-primary text-primary-content hover:bg-primary hover:text-primary-content'
+						: ''}"
 					class:bg-primary={displaySelectedDay && day === value?.getDate()}
 					class:text-primary-content={displaySelectedDay && day === value?.getDate()}
 					on:click={() => setDay(day)}
