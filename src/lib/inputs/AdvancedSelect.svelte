@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
+	import { createEventDispatcher } from 'svelte';
 
 	import { debounce as deb, inRange } from 'lodash';
 	import type { Action } from './types.js';
@@ -16,6 +17,8 @@
 	export let label = '';
 
 	export let itemKey: (item: T) => string = (item: T) => JSON.stringify(item);
+
+	const dispatch = createEventDispatcher();
 
 	let items: T[] = [];
 	let actionList: Action<T | null>[] = [];
@@ -61,6 +64,7 @@
 
 	function select(option: T) {
 		selected = option;
+		dispatch('change');
 	}
 
 	async function runAction(action: Action<T | null>) {

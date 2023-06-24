@@ -67,7 +67,7 @@
 	}
 </script>
 
-<AdvancedSelect {label} {search} bind:selected={selectedOption} let:item>
+<AdvancedSelect on:change {label} {search} bind:selected={selectedOption} let:item>
 	<div class="flex h-full w-full items-center justify-start">
 		{item.name}
 	</div>

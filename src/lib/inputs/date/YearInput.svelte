@@ -64,7 +64,7 @@
 	}
 </script>
 
-<AdvancedSelect bind:selected={value} {search} let:item>
+<AdvancedSelect on:change bind:selected={value} {search} let:item>
 	{#key item}
 		<div in:fly={{ x: xDir, duration: 300 }}>
 			{item}
