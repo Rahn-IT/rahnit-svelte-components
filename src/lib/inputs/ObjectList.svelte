@@ -108,9 +108,11 @@
 			<div class="flex-1 pl-2">
 				<slot item={items[dragging]} index={dragging} />
 			</div>
-			<button class="w-12 cursor-pointer p-1 hover:text-error">
-				<Icon icon={RemoveIcon} class="h-auto w-full" />
-			</button>
+			{#if editable}
+				<button class="w-12 cursor-pointer p-1 hover:text-error">
+					<Icon icon={RemoveIcon} class="h-auto w-full" />
+				</button>
+			{/if}
 		</div>
 	{/if}
 
