@@ -16,11 +16,6 @@
 	let month: number;
 	updateInputs(displayDate);
 
-	$: displaySelectedDay =
-		value !== null &&
-		displayDate.getFullYear() === value.getFullYear() &&
-		displayDate.getMonth() === value.getMonth();
-
 	function setDay(day: number) {
 		value = new Date(displayDate);
 		value.setDate(day);
@@ -57,6 +52,10 @@
 	$: daysLastMonth = prevMonthDate.getDate();
 	$: daysThisMonth = monthDate.getDate();
 	$: nextDays = 7 - ((prevDays + daysThisMonth) % 7);
+	$: displaySelectedDay =
+		value !== null &&
+		displayDate.getFullYear() === value.getFullYear() &&
+		displayDate.getMonth() === value.getMonth();
 </script>
 
 <div
@@ -104,8 +103,6 @@
 					day === value?.getDate()
 						? 'bg-primary text-primary-content hover:bg-primary hover:text-primary-content'
 						: ''}"
-					class:bg-primary={displaySelectedDay && day === value?.getDate()}
-					class:text-primary-content={displaySelectedDay && day === value?.getDate()}
 					on:click={() => setDay(day)}
 				>
 					{day}
