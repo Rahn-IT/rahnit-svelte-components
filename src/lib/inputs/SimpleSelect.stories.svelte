@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
 	import SimpleSelect from './SimpleSelect.svelte';
+	import type { Option } from './types.js';
 
 	const numberOptions: Option<number>[] = [
 		{
