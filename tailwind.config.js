@@ -5,5 +5,8 @@ export default {
 	daisyui: {
 		themes: ['light']
 	},
+	theme: {
+		colors: {}
+	},
 	plugins: [require('@tailwindcss/typography'), require('daisyui')]
 };
