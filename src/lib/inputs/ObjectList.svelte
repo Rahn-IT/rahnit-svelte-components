@@ -18,7 +18,7 @@
 		return JSON.stringify(item);
 	};
 	export let title = '';
-	export let create: () => Promise<T>;
+	export let create: (() => Promise<T>) | null = null;
 
 	function removeItem(index: number) {
 		items.splice(index, 1);
@@ -26,6 +26,7 @@
 	}
 
 	async function addItem() {
+		if (create === null) return;
 		items.push(await create());
 		items = items;
 	}
