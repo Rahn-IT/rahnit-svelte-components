@@ -27,7 +27,9 @@
 
 	$: {
 		searchString;
-		searchFunc();
+		if (hasFocus) {
+			searchFunc();
+		}
 	}
 
 	let searchString = '';
