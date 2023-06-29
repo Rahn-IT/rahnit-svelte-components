@@ -191,7 +191,7 @@
 	>
 		<div
 			class="flex-1 cursor-pointer overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
-			style:height={toRender.length * 2.53 + 'rem'}
+			style:height={toRender.length * 2.5 + 'rem'}
 		>
 			{#each toRender as render, i (render.key)}
 				<div
