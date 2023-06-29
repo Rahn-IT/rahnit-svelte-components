@@ -26,6 +26,9 @@
 				}
 			});
 		}
+		await new Promise(function (resolve, reject) {
+			setTimeout(resolve, 1000);
+		});
 		return act;
 	}
 
@@ -36,7 +39,7 @@
 
 <Template let:args>
 	<div class="h-screen">
-		<AdvancedSelect bind:selected {actions} {search} let:item>
+		<AdvancedSelect bind:selected {actions} {search} {...args} let:item>
 			{item.toString()}
 		</AdvancedSelect>
 	</div>

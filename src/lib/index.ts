@@ -7,3 +7,4 @@ export { default as MonthInput } from './inputs/date/MonthInput.svelte';
 export { default as YearInput } from './inputs/date/YearInput.svelte';
 export { default as DraggableContainer } from './containers/DraggableContainer.svelte';
 export { default as SideMenuContainer } from './containers/SideMenuContainer.svelte';
+export { default as LoadingContainer } from './containers/LoadingContainer.svelte';

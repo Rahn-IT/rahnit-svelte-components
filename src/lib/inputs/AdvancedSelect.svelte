@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	import { debounce as deb, inRange } from 'lodash';
 	import type { Action } from './types.js';
 	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
+	import LoadingContainer from '../containers/LoadingContainer.svelte';
 
 	type T = $$Generic<any>;
 
@@ -13,6 +15,7 @@
 	export let actions: ((searchString: string) => Promise<Action<T | null>[]>) | null = null;
 	export let debounce = false;
 	export let placeholder = 'Suche';
+	export let display_loading = false;
 
 	export let label = '';
 
@@ -46,8 +49,10 @@
 
 	let loading = false;
 
+	$: console.log(display_loading);
 	async function runSearch() {
-		loading = true;
+		console.log(display_loading);
+		loading = display_loading;
 		try {
 			if (search !== null) {
 				const result = await search(searchString);
@@ -187,44 +192,49 @@
 
 	<!-- Dropdown -->
 	<div
-		class="dropdown-content z-50 mt-1 flex w-full pl-4 {toRender.length > 0 ? '' : '!opacity-0'}"
+		class="dropdown-content z-50 mt-1 flex w-full pl-4 transition-opacity duration-200 {toRender.length ||
+		loading > 0
+			? ''
+			: '!opacity-0'}"
 	>
 		<div
-			class="flex-1 cursor-pointer overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
-			style:height={toRender.length * 2.5 + 'rem'}
+			class="flex-1 overflow-hidden rounded-md border border-secondary shadow-md transition-all duration-200"
+			style:height={loading ? '2.5rem' : toRender.length * 2.5 + 'rem'}
 		>
-			{#each toRender as render, i (render.key)}
-				<div
-					class="h-10 px-4 hover:bg-base-300"
-					class:bg-base-300={selectedOptionIndex === i}
-					animate:flip={{
-						duration: 200
-					}}
-				>
-					{#if render.isItem}
-						{@const item = render.item}
-						<div
-							class="flex h-full w-full items-center justify-start"
-							on:mousedown={() => select(item)}
-						>
-							<slot {item} />
-						</div>
-					{:else}
-						{@const action = render.action}
-						<div
-							class="flex h-full w-full items-center justify-center"
-							on:mousedown={async () => runAction(action)}
-						>
-							{#if action.icon !== null}
-								<div class="h-full">
-									<Icon class="h-full w-auto" icon={action.icon} />
-								</div>
-							{/if}
-							{action.name}
-						</div>
-					{/if}
-				</div>
-			{/each}
+			<LoadingContainer {loading}>
+				{#each toRender as render, i (render.key)}
+					<div
+						class="h-10 cursor-pointer px-4 hover:bg-base-300"
+						class:bg-base-300={selectedOptionIndex === i}
+						animate:flip={{
+							duration: 200
+						}}
+					>
+						{#if render.isItem}
+							{@const item = render.item}
+							<div
+								class="flex h-full w-full items-center justify-start"
+								on:mousedown={() => select(item)}
+							>
+								<slot {item} />
+							</div>
+						{:else}
+							{@const action = render.action}
+							<div
+								class="flex h-full w-full items-center justify-center"
+								on:mousedown={async () => runAction(action)}
+							>
+								{#if action.icon !== null}
+									<div class="h-full">
+										<Icon class="h-full w-auto" icon={action.icon} />
+									</div>
+								{/if}
+								{action.name}
+							</div>
+						{/if}
+					</div>
+				{/each}
+			</LoadingContainer>
 		</div>
 	</div>
 </div>
