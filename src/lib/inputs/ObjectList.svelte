@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import { crossfade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
@@ -8,6 +9,7 @@
 	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
 
 	const [send, receive] = crossfade({});
+	const dispatch = createEventDispatcher();
 
 	export let sortable = true;
 	export let editable = true;
@@ -23,12 +25,14 @@
 	function removeItem(index: number) {
 		items.splice(index, 1);
 		items = items;
+		dispatch('change');
 	}
 
 	async function addItem() {
 		if (create === null) return;
 		items.push(await create());
 		items = items;
+		dispatch('change');
 	}
 
 	let dragging: number | null = null;
@@ -74,6 +78,7 @@
 		[items[index], items[dragging], dragging] = [items[dragging], items[index], index];
 		lastDragging = dragging;
 		items = items;
+		dispatch('change');
 	}
 
 	function letGo() {
@@ -156,6 +161,9 @@
 	{/each}
 	{#if editable}
 		<div class="flex border-t border-base-300">
+			{#if sortable}
+				<div class="w-12 cursor-grab p-1" />
+			{/if}
 			<div class="flex-1 py-3 pl-2">
 				<div class="flex w-full items-center justify-center">
 					<button
