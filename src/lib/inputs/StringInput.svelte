@@ -1,11 +1,28 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
+
 	export let label = '';
 	export let id = '';
-	export let value = '';
+	export let value;
 	export let required = false;
 	export let disabled = false;
 	export let autocomplete = 'off';
+
+	export let pattern: RegExp | null = null; // Regular expression for validation
+
+	export let errorMessage: string = 'Invalid input'; // Error message when regex doesn't match
+
 	let hasFocus = false;
+
+	let valid: bool = true;
+
+	$: checkInput(value);
+	function checkInput(value: string) {
+		console.log(value);
+		console.log(pattern);
+		valid = pattern === null || pattern.test(value);
+		console.log(valid);
+	}
 </script>
 
 <div class="w-full py-2">
@@ -17,10 +34,13 @@
 			{required}
 			{disabled}
 			{autocomplete}
-			class="text-text border-secondary focus:border-secondary-focus block w-full border-b-2 bg-transparent py-1.5 pl-4 pr-5 placeholder-transparent outline-none"
+			class="text-text block w-full border-b-2 border-secondary bg-transparent pb-2.5 pl-4 pr-5 pt-1.5 placeholder-transparent outline-none transition-colors duration-150 focus:border-secondary-focus
+			{valid ? 'border-secondary focus:border-secondary-focus' : 'border-error focus:border-error'}"
 			placeholder={hasFocus ? '' : ' '}
 			on:focus={() => (hasFocus = true)}
 			on:blur={() => (hasFocus = false)}
+			on:focus
+			on:blur
 		/>
 		<label
 			for={id}
@@ -30,5 +50,13 @@
 		>
 			{label}
 		</label>
+		{#if !valid}
+			<span
+				transition:fade={{ duration: 150 }}
+				class="pointer-events-none absolute -bottom-2.5 left-4 rounded bg-error px-1.5 text-xs text-error-content"
+			>
+				{errorMessage}
+			</span>
+		{/if}
 	</div>
 </div>
