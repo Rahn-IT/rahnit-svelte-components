@@ -23,10 +23,8 @@
 		valid = pattern === null || pattern.test(value);
 	}
 
+	const validator: Validator | undefined = getContext('validator')?.getValidator();
 	$: validator?.validate(valid);
-
-	const getValidator: () => Validator | undefined = getContext('validator');
-	const validator: Validator | undefined = getValidator !== undefined ? getValidator() : undefined;
 </script>
 
 <div class="w-full py-2">

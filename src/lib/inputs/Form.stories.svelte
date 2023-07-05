@@ -11,7 +11,12 @@
 
 <Template let:args>
 	<Form bind:valid>
-		<StringInput bind:value pattern={/^[a-z]*$/} />
+		<StringInput
+			label="test"
+			bind:value
+			pattern={/^[a-z]*$/}
+			errorMessage="Only small characters allowed!"
+		/>
 	</Form>
 	{#if valid}
 		Form is valid

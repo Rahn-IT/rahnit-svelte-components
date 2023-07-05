@@ -28,7 +28,7 @@
 		return validator;
 	}
 
-    setContext('validator', getValidator);
+    setContext('validator', {getValidator});
 
 	export let valid = true;
 
