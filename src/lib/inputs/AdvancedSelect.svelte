@@ -49,9 +49,7 @@
 
 	let loading = false;
 
-	$: console.log(display_loading);
 	async function runSearch() {
-		console.log(display_loading);
 		loading = display_loading;
 		try {
 			if (search !== null) {
