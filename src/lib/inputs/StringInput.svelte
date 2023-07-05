@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { getContext } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import type { Validator } from './types.js';
 
 	export let label = '';
 	export let id = '';
-	export let value;
+	export let value: string;
 	export let required = false;
 	export let disabled = false;
 	export let autocomplete = 'off';
@@ -14,15 +16,17 @@
 
 	let hasFocus = false;
 
-	let valid: bool = true;
+	let valid: boolean = true;
 
 	$: checkInput(value);
 	function checkInput(value: string) {
-		console.log(value);
-		console.log(pattern);
 		valid = pattern === null || pattern.test(value);
-		console.log(valid);
 	}
+
+	$: validator?.validate(valid);
+
+	const getValidator: () => Validator | undefined = getContext('validator');
+	const validator: Validator | undefined = getValidator !== undefined ? getValidator() : undefined;
 </script>
 
 <div class="w-full py-2">

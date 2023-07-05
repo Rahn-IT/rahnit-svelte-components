@@ -17,3 +17,9 @@ export type KeyedItem<T> = {
 	key: string | number;
 	value: T;
 };
+
+export type Validator = {
+	valid: boolean,
+	validate(valid: boolean): void
+	unsubscribe(): void
+}
