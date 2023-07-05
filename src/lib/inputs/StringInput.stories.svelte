@@ -8,8 +8,8 @@
 <Meta title="Inputs/StringInput" component={StringInput} />
 
 <Template let:args>
-	<StringInput {...args} pattern={new RegExp(args.pattern)} bind:value let:index />
-	<StringInput {...args} pattern={new RegExp(args.pattern)} bind:value let:index />
+	<StringInput {...args} pattern={new RegExp(args.pattern)} bind:value />
+	<StringInput {...args} pattern={new RegExp(args.pattern)} bind:value />
 </Template>
 
 <Story
