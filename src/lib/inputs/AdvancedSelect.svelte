@@ -196,7 +196,7 @@
 			: '!opacity-0'}"
 	>
 		<div
-			class="flex-1 overflow-hidden rounded-md border border-secondary shadow-md transition-all duration-200"
+			class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
 			style:height={loading ? '2.5rem' : toRender.length * 2.5 + 'rem'}
 		>
 			<LoadingContainer {loading}>
