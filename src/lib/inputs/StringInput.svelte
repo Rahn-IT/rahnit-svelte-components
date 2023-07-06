@@ -36,8 +36,8 @@
 			{required}
 			{disabled}
 			{autocomplete}
-			class="text-text block w-full border-b-2 border-secondary bg-transparent pb-2.5 pl-4 pr-5 pt-1.5 placeholder-transparent outline-none transition-colors duration-150 focus:border-secondary-focus
-			{valid ? 'border-secondary focus:border-secondary-focus' : 'border-error focus:border-error'}"
+			class="text-text block w-full border-b-2 bg-transparent pb-2.5 pl-4 pr-5 pt-1.5 placeholder-transparent outline-none transition-colors duration-150
+			{valid ? 'border-secondary focus:border-secondary-focus' : 'border-error'}"
 			placeholder={hasFocus ? '' : ' '}
 			on:focus={() => (hasFocus = true)}
 			on:blur={() => (hasFocus = false)}

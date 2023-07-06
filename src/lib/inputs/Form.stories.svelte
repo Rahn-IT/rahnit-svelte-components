@@ -17,6 +17,12 @@
 			pattern={/^[a-z]*$/}
 			errorMessage="Only small characters allowed!"
 		/>
+		<StringInput
+			label="test"
+			bind:value
+			pattern={/^[a-z]*$/}
+			errorMessage="Only small characters allowed!"
+		/>
 	</Form>
 	{#if valid}
 		Form is valid
