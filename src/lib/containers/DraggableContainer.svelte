@@ -29,9 +29,8 @@
 	$: minY = -contentHeight + containerHeight - maxY;
 
 	$: contentStyle = `transform: translate(${drawX}px, ${drawY}px); ${
-		isDragging ? 'pointer-events: none; user-select: none;' : ''
+		isDragging ? 'user-select: none;' : ''
 	}`;
-	$: containerStyle = `cursor: ${isDragging ? 'grabbing' : 'move'};`;
 
 	function handleMouseDown(event: MouseEvent) {
 		isDragging = true;
@@ -54,11 +53,10 @@
 </script>
 
 <div
-	class="relative h-full w-full overflow-hidden"
+	class="relative h-full w-full overflow-hidden { isDragging ? 'cursor-grabbing' : 'cursor-move' }"
 	on:mousedown={handleMouseDown}
 	on:mouseup={handleMouseUp}
 	on:mousemove={handleMouseMove}
-	style:cursor={isDragging ? 'grabbing' : 'move'}
 	bind:clientWidth={containerWidth}
 	bind:clientHeight={containerHeight}
 >

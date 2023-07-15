@@ -7,6 +7,10 @@
 		items.push(i);
 	}
 	items = items;
+
+	function click() {
+		console.log('clicked');
+	}
 </script>
 
 <Meta title="Containers/DraggableContainer" component={DraggableContainer} />
@@ -14,6 +18,7 @@
 <Template let:args>
 	<div class="h-screen">
 		<DraggableContainer>
+			<button class="btn" on:click={click}>Click me!</button>
 			<table>
 				{#each items as i}
 					<tr>
