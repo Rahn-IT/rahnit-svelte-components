@@ -34,14 +34,12 @@
 	$: containerStyle = `cursor: ${isDragging ? 'grabbing' : 'move'};`;
 
 	function handleMouseDown(event: MouseEvent) {
-		event.stopPropagation();
 		isDragging = true;
 		offsetX = event.pageX;
 		offsetY = event.pageY;
 	}
 
 	function handleMouseUp(event: MouseEvent) {
-		event.stopPropagation();
 		posX = drawX;
 		posY = drawY;
 		isDragging = false;
