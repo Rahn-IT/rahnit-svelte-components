@@ -52,11 +52,11 @@
 	}
 </script>
 
+<svelte:window on:mouseup|capture={handleMouseUp} on:mousemove={handleMouseMove} />
+
 <div
-	class="relative h-full w-full overflow-hidden { isDragging ? 'cursor-grabbing' : 'cursor-move' }"
+	class="relative h-full w-full overflow-hidden {isDragging ? 'cursor-grabbing' : 'cursor-move'}"
 	on:mousedown={handleMouseDown}
-	on:mouseup={handleMouseUp}
-	on:mousemove={handleMouseMove}
 	bind:clientWidth={containerWidth}
 	bind:clientHeight={containerHeight}
 >
