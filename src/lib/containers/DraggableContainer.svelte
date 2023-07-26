@@ -96,6 +96,20 @@
 		}
 		zoomLevel = clamp(zoomLevel, minZoom, maxZoom);
 	}
+
+	let container: HTMLDivElement;
+	export function panTo(element: HTMLElement) {
+		const target = element.getBoundingClientRect();
+		const offset = container.getBoundingClientRect();
+
+		const x = (target.x + target.width - offset.x + containerWidth) / 2 / zoomLevel;
+		const y = (target.y + target.height - offset.y + containerHeight) / 2 / zoomLevel;
+		console.log(x, y);
+		currentX = clamp(currentX - x, minX, maxX);
+		currentY = clamp(currentY - y, minY, maxY);
+		posX = currentX;
+		posY = currentY;
+	}
 </script>
 
 <svelte:window on:mouseup|capture={handleMouseUp} on:mousemove={handleMouseMove} />
@@ -109,6 +123,7 @@
 	on:wheel|preventDefault={handleWheel}
 	bind:clientWidth={containerWidth}
 	bind:clientHeight={containerHeight}
+	bind:this={container}
 >
 	<div
 		class="absolute left-0 top-0"

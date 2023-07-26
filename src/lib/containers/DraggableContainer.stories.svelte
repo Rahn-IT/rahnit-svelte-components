@@ -8,17 +8,24 @@
 	}
 	items = items;
 
-	function click() {
-		console.log('clicked');
+	function click(event: MouseEvent) {
+		const target = event.target;
+		if (target instanceof HTMLElement) {
+			container.panTo(target);
+		}
 	}
+
+	let buttonTop: HTMLElement;
+	let buttonBottom: HTMLElement;
+	let container: DraggableContainer;
 </script>
 
 <Meta title="Containers/DraggableContainer" component={DraggableContainer} />
 
 <Template let:args>
 	<div class="h-screen">
-		<DraggableContainer>
-			<button class="btn" on:click={click}>Click me!</button>
+		<DraggableContainer bind:this={container}>
+			<button class="btn" bind:this={buttonTop} on:click={click}>to Bottom</button>
 			<table>
 				{#each items as i}
 					<tr>
@@ -30,6 +37,7 @@
 					</tr>
 				{/each}
 			</table>
+			<button class="btn" bind:this={buttonBottom} on:click={click}>to Top</button>
 		</DraggableContainer>
 	</div>
 </Template>
