@@ -16,11 +16,28 @@
 	let contentWidth: number;
 	let contentHeight: number;
 
+	let initialized = false;
+
+	$: init(containerWidth, containerHeight);
+	function init(containerWidth: number, containerHeight: number) {
+		if (containerWidth === undefined) return;
+		if (containerHeight === undefined) return;
+		if (initialized) return;
+		posX = -containerWidth / 2 + 30;
+		posY = -containerHeight / 2 + 30;
+		initialized = true;
+	}
+
 	const defaultZoom = 1;
 	export let minZoom = 0.5;
 	export let maxZoom = 4;
 	export let zoomMultiplier = 1.2;
 	let zoomLevel = defaultZoom;
+
+	$: maxX = (containerWidth / 4) * 3 - containerWidth / 2;
+	$: minX = -contentWidth + containerWidth - maxX - containerWidth;
+	$: maxY = (containerHeight / 4) * 3 - containerHeight / 2;
+	$: minY = -contentHeight + containerHeight - maxY - containerHeight;
 
 	let hovering = false;
 
@@ -33,20 +50,17 @@
 		currentY = posY;
 	}
 
-	$: calculateDraw(currentX, currentY, zoomLevel);
-	function calculateDraw(currentX: number, currentY: number, zoomLevel: number) {
-		const deltaX = (containerWidth - containerWidth * zoomLevel) / 2;
-		const deltaY = currentY - containerHeight / 2;
+	$: calculateDraw(currentX, currentY, zoomLevel, containerWidth, containerHeight);
+	function calculateDraw(
+		currentX: number,
+		currentY: number,
+		zoomLevel: number,
+		containerWidth: number,
+		containerHeight: number
+	) {
 		drawX = currentX * zoomLevel + containerWidth / 2;
 		drawY = currentY * zoomLevel + containerHeight / 2;
 	}
-
-	$: maxX = (containerWidth / 4) * 3 * 1;
-	$: minX = (-contentWidth + containerWidth - maxX) * 1;
-	$: maxY = (containerHeight / 4) * 3 * 1;
-	$: minY = (-contentHeight + containerHeight - maxY) * 1;
-
-	$: console.log('X', drawX, 'Y', drawY, 'Zoom', zoomLevel);
 
 	$: contentStyle = `transform: matrix(${zoomLevel}, 0, 0, ${zoomLevel}, ${drawX}, ${drawY}); ${
 		isDragging ? 'user-select: none;' : ''
