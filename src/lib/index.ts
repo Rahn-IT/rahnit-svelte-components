@@ -10,3 +10,4 @@ export { default as DraggableContainer } from './containers/DraggableContainer.s
 export { default as SideMenuContainer } from './containers/SideMenuContainer.svelte';
 export { default as LoadingContainer } from './containers/LoadingContainer.svelte';
 export { default as ColorInput } from './inputs/ColorInput.svelte';
+export * from './PersistentStore.js';
