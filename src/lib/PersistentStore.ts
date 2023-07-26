@@ -7,13 +7,14 @@ export function createPersistentStore<T>(key: string, initialValue: T) {
 		return storeMap[key];
 	}
 
-	const store = writable(initialValue);
-
 	// check if there is a value in localStorage
 
-	if (localStorage.getItem(key) !== null) {
-		store.set(JSON.parse(localStorage.getItem(key)!));
+	const storeValue = localStorage.getItem(key);
+	if (storeValue !== null) {
+		initialValue = JSON.parse(storeValue);
 	}
+
+	const store = writable(initialValue);
 
 	// write the value to localStorage when the store is updated
 	store.subscribe((value) => {
