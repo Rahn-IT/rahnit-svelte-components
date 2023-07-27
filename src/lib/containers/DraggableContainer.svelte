@@ -2,8 +2,8 @@
 	import { clamp, max, min } from 'lodash';
 
 	let isDragging = false;
-	let posX = 20;
-	let posY = 20;
+	let posX = 0;
+	let posY = 0;
 	let offsetX = 0;
 	let offsetY = 0;
 	let currentX = posX;
@@ -99,16 +99,32 @@
 
 	let container: HTMLDivElement;
 	export function panTo(element: HTMLElement) {
-		const target = element.getBoundingClientRect();
-		const offset = container.getBoundingClientRect();
+		//check if element is a child of container
+		if (!container.contains(element)) {
+			return;
+		}
+		let el: HTMLElement = element;
+		let relativeX = 0;
+		let relativeY = 0;
+		let level = 0;
 
-		const x = (target.x + target.width - offset.x + containerWidth) / 2 / zoomLevel;
-		const y = (target.y + target.height - offset.y + containerHeight) / 2 / zoomLevel;
-		console.log(x, y);
-		currentX = clamp(currentX - x, minX, maxX);
-		currentY = clamp(currentY - y, minY, maxY);
+		while (el !== container) {
+			relativeX += el.offsetLeft;
+			relativeY += el.offsetTop;
+			console.log('level', level++, el.offsetLeft, el.offsetTop, el);
+			el = el.parentElement as HTMLElement;
+		}
+
+		const rect = element.getBoundingClientRect();
+
+		const newX = relativeX + rect.width / zoomLevel / 2;
+		const newY = relativeY + rect.height / zoomLevel / 2;
+		currentX = clamp(-newX, minX, maxX);
+		currentY = clamp(-newY, minY, maxY);
 		posX = currentX;
-		posY = currentY;
+		posY = currentX;
+
+		return;
 	}
 </script>
 

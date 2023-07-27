@@ -11,7 +11,11 @@
 	function click(event: MouseEvent) {
 		const target = event.target;
 		if (target instanceof HTMLElement) {
-			container.panTo(target);
+			if (target === buttonTop) {
+				container.panTo(buttonBottom);
+			} else if (target === buttonBottom) {
+				container.panTo(buttonTop);
+			}
 		}
 	}
 
