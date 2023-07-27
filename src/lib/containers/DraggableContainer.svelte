@@ -82,6 +82,8 @@
 		isDragging = true;
 		offsetX = event.pageX;
 		offsetY = event.pageY;
+		posX = currentX;
+		posY = currentY;
 	}
 
 	function handleMouseUp(event: MouseEvent) {
