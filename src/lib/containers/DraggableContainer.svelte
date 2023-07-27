@@ -90,22 +90,13 @@
 		isDragging = false;
 	}
 
-	function onMouseMove(event: MouseEvent) {
-		if (isDragging) {
-			//mouseMoveDebounce(event);
-			mouseMoveThrottle(event);
-		}
-	}
-
-	const performanceLimiter = 10;
-	const mouseMoveThrottle = throttle(handleMouseMove, performanceLimiter);
-	//const mouseMoveDebounce = debounce(handleMouseMove, performanceLimiter);
-
 	function handleMouseMove(event: MouseEvent) {
-		const deltaX = event.pageX - offsetX;
-		const deltaY = event.pageY - offsetY;
-		currentX = clamp(posX + deltaX / zoomLevel, minX, maxX);
-		currentY = clamp(posY + deltaY / zoomLevel, minY, maxY);
+		if (isDragging) {
+			const deltaX = event.pageX - offsetX;
+			const deltaY = event.pageY - offsetY;
+			currentX = clamp(posX + deltaX / zoomLevel, minX, maxX);
+			currentY = clamp(posY + deltaY / zoomLevel, minY, maxY);
+		}
 	}
 
 	function handleWheel(event: WheelEvent) {
@@ -176,7 +167,7 @@
 	}
 </script>
 
-<svelte:window on:mouseup|capture={handleMouseUp} on:mousemove={onMouseMove} />
+<svelte:window on:mouseup|capture={handleMouseUp} on:mousemove={handleMouseMove} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
