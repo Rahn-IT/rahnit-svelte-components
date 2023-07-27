@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { clamp, max, min } from 'lodash';
+	import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
 
 	let isDragging = false;
 	let posX = 0;
@@ -8,8 +10,16 @@
 	let offsetY = 0;
 	let currentX = posX;
 	let currentY = posY;
-	let drawX = currentX;
-	let drawY = currentY;
+	const duration = 500;
+	const easing = cubicOut;
+	const drawX = tweened(currentX, {
+		duration: duration,
+		easing: easing
+	});
+	let drawY = tweened(currentY, {
+		duration: duration,
+		easing: easing
+	});
 
 	let containerWidth: number;
 	let containerHeight: number;
@@ -58,11 +68,11 @@
 		containerWidth: number,
 		containerHeight: number
 	) {
-		drawX = currentX * zoomLevel + containerWidth / 2;
-		drawY = currentY * zoomLevel + containerHeight / 2;
+		drawX.set(currentX * zoomLevel + containerWidth / 2);
+		drawY.set(currentY * zoomLevel + containerHeight / 2);
 	}
 
-	$: contentStyle = `transform: matrix(${zoomLevel}, 0, 0, ${zoomLevel}, ${drawX}, ${drawY}); ${
+	$: contentStyle = `transform: matrix(${zoomLevel}, 0, 0, ${zoomLevel}, ${$drawX}, ${$drawY}); ${
 		isDragging ? 'user-select: none;' : ''
 	} transform-origin: top left`;
 
