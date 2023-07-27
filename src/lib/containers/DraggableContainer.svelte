@@ -118,12 +118,12 @@
 	export function panTo(element: HTMLElement) {
 		//check if element is a child of container
 		if (!container.contains(element)) {
+			console.error('The element is not part of this container', element);
 			return;
 		}
 		let el: HTMLElement = element;
 		let relativeX = 0;
 		let relativeY = 0;
-		let level = 0;
 
 		while (el !== container) {
 			relativeX += el.offsetLeft;
@@ -138,7 +138,7 @@
 		currentX = clamp(-newX, minX, maxX);
 		currentY = clamp(-newY, minY, maxY);
 		posX = currentX;
-		posY = currentX;
+		posY = currentY;
 
 		return;
 	}
