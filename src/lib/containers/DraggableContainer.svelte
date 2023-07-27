@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { clamp } from 'lodash';
-	import { tweened, spring } from 'svelte/motion';
+	import { clamp, debounce, throttle } from 'lodash';
+	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
 
 	let isDragging = false;
@@ -21,22 +21,10 @@
 		easing: easing
 	});
 
-	let containerWidth: number;
-	let containerHeight: number;
-	let contentWidth: number;
-	let contentHeight: number;
-
-	let initialized = false;
-
-	$: init(containerWidth, containerHeight);
-	function init(containerWidth: number, containerHeight: number) {
-		if (containerWidth === undefined) return;
-		if (containerHeight === undefined) return;
-		if (initialized) return;
-		posX = -containerWidth / 2 + 30;
-		posY = -containerHeight / 2 + 30;
-		initialized = true;
-	}
+	let containerWidth: number | undefined;
+	let containerHeight: number | undefined;
+	let contentWidth: number | undefined;
+	let contentHeight: number | undefined;
 
 	const defaultZoom = 1;
 	export let minZoom = 0.5;
@@ -58,25 +46,32 @@
 
 	let hovering = false;
 
-	$: fixPos(minX, maxX, minY, maxY);
-
-	function fixPos(minX: number, maxX: number, mixY: number, maxY: number) {
-		posX = clamp(posX, minX, maxX);
-		posY = clamp(posY, minY, maxY);
-		currentX = posX;
-		currentY = posY;
-	}
+	let setDirectly = false;
 
 	$: calculateDraw(currentX, currentY, zoomLevel, containerWidth, containerHeight);
 	function calculateDraw(
 		currentX: number,
 		currentY: number,
 		zoomLevel: number,
-		containerWidth: number,
-		containerHeight: number
+		containerWidth: number | undefined,
+		containerHeight: number | undefined
 	) {
-		drawX.set(currentX * zoomLevel + containerWidth / 2);
-		drawY.set(currentY * zoomLevel + containerHeight / 2);
+		if (containerHeight === undefined || containerWidth === undefined) {
+			setDirectly = true;
+			return;
+		}
+		const x = currentX * zoomLevel + containerWidth / 2;
+		const y = currentY * zoomLevel + containerHeight / 2;
+
+		if (setDirectly) {
+			const directly = { duration: 0 };
+			drawX.set(x, directly);
+			drawY.set(y, directly);
+			setDirectly = false;
+		} else {
+			drawX.set(x);
+			drawY.set(y);
+		}
 	}
 
 	$: contentStyle = `transform: matrix(${$drawZoom}, 0, 0, ${$drawZoom}, ${$drawX}, ${$drawY}); ${
@@ -95,13 +90,22 @@
 		isDragging = false;
 	}
 
-	function handleMouseMove(event: MouseEvent) {
+	function onMouseMove(event: MouseEvent) {
 		if (isDragging) {
-			const deltaX = event.pageX - offsetX;
-			const deltaY = event.pageY - offsetY;
-			currentX = clamp(posX + deltaX / zoomLevel, minX, maxX);
-			currentY = clamp(posY + deltaY / zoomLevel, minY, maxY);
+			//mouseMoveDebounce(event);
+			mouseMoveThrottle(event);
 		}
+	}
+
+	const performanceLimiter = 10;
+	const mouseMoveThrottle = throttle(handleMouseMove, performanceLimiter);
+	//const mouseMoveDebounce = debounce(handleMouseMove, performanceLimiter);
+
+	function handleMouseMove(event: MouseEvent) {
+		const deltaX = event.pageX - offsetX;
+		const deltaY = event.pageY - offsetY;
+		currentX = clamp(posX + deltaX / zoomLevel, minX, maxX);
+		currentY = clamp(posY + deltaY / zoomLevel, minY, maxY);
 	}
 
 	function handleWheel(event: WheelEvent) {
@@ -114,10 +118,12 @@
 		zoomLevel = clamp(zoomLevel, minZoom, maxZoom);
 	}
 
-	let container: HTMLDivElement;
-	export function panTo(element: HTMLElement | SVGElement) {
+	let container: HTMLDivElement | undefined;
+	let content: HTMLDivElement | undefined;
+
+	export function panTo(element: HTMLElement | SVGElement, instant: boolean = false) {
 		//check if element is a child of container
-		if (!container.contains(element)) {
+		if (!content.contains(element)) {
 			console.error('The element is not part of this container', element);
 			return;
 		}
@@ -125,17 +131,18 @@
 		let relativeX = 0;
 		let relativeY = 0;
 
-		while (el !== container) {
+		while (el !== content) {
 			if (el instanceof HTMLElement) {
 				relativeX += el.offsetLeft;
 				relativeY += el.offsetTop;
 			} else if (el instanceof SVGElement) {
-				if (el.x === undefined || el.y === undefined) {
-					console.error('Element has no x or y', el);
-					return;
+				if (el.attributes.x !== undefined) {
+					relativeX += Number(el.attributes.x.value);
 				}
-				relativeX += el.x.baseVal.value;
-				relativeY += el.y.baseVal.value;
+
+				if (el.attributes.y !== undefined) {
+					relativeY += Number(el.attributes.y.value);
+				}
 			} else {
 				console.error('Element is not an HTMLElement or SVGElement', el);
 				return;
@@ -143,20 +150,33 @@
 			el = el.parentElement as HTMLElement;
 		}
 
-		const rect = element.getBoundingClientRect();
+		let targetWidth;
+		let targetHeight;
+		if (element instanceof HTMLElement) {
+			const rect = element.getBoundingClientRect();
+			targetWidth = rect.width;
+			targetHeight = rect.height;
+		} else {
+			if (element.attributes.width === undefined || element.attributes.height === undefined) {
+				console.error('Element has no width or height', element);
+				return;
+			}
+			targetWidth = Number(element.attributes.width.value);
+			targetHeight = Number(element.attributes.height.value);
+		}
 
-		const newX = relativeX + rect.width / zoomLevel / 2;
-		const newY = relativeY + rect.height / zoomLevel / 2;
-		currentX = clamp(-newX, minX, maxX);
-		currentY = clamp(-newY, minY, maxY);
-		posX = currentX;
-		posY = currentY;
+		const newX = -(relativeX + targetWidth / zoomLevel / 2);
+		const newY = -(relativeY + targetHeight / zoomLevel / 2);
 
-		return;
+		setDirectly = instant;
+		currentX = newX;
+		currentY = newY;
+		posX = newX;
+		posY = newY;
 	}
 </script>
 
-<svelte:window on:mouseup|capture={handleMouseUp} on:mousemove={handleMouseMove} />
+<svelte:window on:mouseup|capture={handleMouseUp} on:mousemove={onMouseMove} />
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
@@ -170,8 +190,10 @@
 	bind:this={container}
 >
 	<div
-		class="absolute left-0 top-0"
+		class="absolute left-0 top-0 transform"
+		class:hidden={containerWidth === undefined || containerHeight === undefined}
 		style={contentStyle}
+		bind:this={content}
 		bind:clientWidth={contentWidth}
 		bind:clientHeight={contentHeight}
 	>
