@@ -47,7 +47,6 @@
 		const newDisplay = value.substring(1);
 		if (newDisplay !== display) {
 			display = newDisplay;
-			console.log('update');
 		}
 	}
 </script>

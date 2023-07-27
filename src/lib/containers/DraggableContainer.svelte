@@ -128,7 +128,6 @@
 		while (el !== container) {
 			relativeX += el.offsetLeft;
 			relativeY += el.offsetTop;
-			console.log('level', level++, el.offsetLeft, el.offsetTop, el);
 			el = el.parentElement as HTMLElement;
 		}
 
