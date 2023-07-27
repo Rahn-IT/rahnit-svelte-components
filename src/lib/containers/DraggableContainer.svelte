@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clamp, max, min } from 'lodash';
+	import { clamp } from 'lodash';
 	import { tweened, spring } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
 
@@ -115,19 +115,31 @@
 	}
 
 	let container: HTMLDivElement;
-	export function panTo(element: HTMLElement) {
+	export function panTo(element: HTMLElement | SVGElement) {
 		//check if element is a child of container
 		if (!container.contains(element)) {
 			console.error('The element is not part of this container', element);
 			return;
 		}
-		let el: HTMLElement = element;
+		let el: HTMLElement | SVGElement = element;
 		let relativeX = 0;
 		let relativeY = 0;
 
 		while (el !== container) {
-			relativeX += el.offsetLeft;
-			relativeY += el.offsetTop;
+			if (el instanceof HTMLElement) {
+				relativeX += el.offsetLeft;
+				relativeY += el.offsetTop;
+			} else if (el instanceof SVGElement) {
+				if (el.x === undefined || el.y === undefined) {
+					console.error('Element has no x or y', el);
+					return;
+				}
+				relativeX += el.x.baseVal.value;
+				relativeY += el.y.baseVal.value;
+			} else {
+				console.error('Element is not an HTMLElement or SVGElement', el);
+				return;
+			}
 			el = el.parentElement as HTMLElement;
 		}
 
