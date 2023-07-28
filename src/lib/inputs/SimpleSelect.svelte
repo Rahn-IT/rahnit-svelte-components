@@ -33,11 +33,9 @@
 	}
 
 	function updateSelectedFromUserInput(selectedOption: Option<T> | null) {
-		console.log('updateSelectedFromUserInput');
 		if (ignoreUpdate) {
 			return;
 		}
-		console.log('updateSelectedFromUserInput', selectedOption);
 		const newSelected = selectedOption !== null ? selectedOption.value : null;
 		updateSelected(newSelected);
 	}
@@ -46,11 +44,9 @@
 		newSelected: T | null,
 		optionMap: { [key: string]: Option<T> }
 	) {
-		console.log('updateSelectedOptionFromExternal');
 		if (ignoreUpdate) {
 			return;
 		}
-		console.log('updateSelectedOptionFromExternal', newSelected);
 		ignoreUpdate = true;
 
 		if (newSelected === null) {
