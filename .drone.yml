@@ -4,12 +4,24 @@ type: docker
 name: svelte components
 
 steps:
-  - name: lint-check-build
+  - name: install dependencies
     image: node:18-alpine
     commands:
       - npm install --include=dev
+
+  - name: lint
+    image: node:18-alpine
+    commands:
       - npm run lint
+
+  - name: check
+    image: node:18-alpine
+    commands:
       - npm run check
+
+  - name: test-build
+    image: node:18-alpine
+    commands:
       - npm run package
 
   - name: publish, if new version
