@@ -3,10 +3,6 @@ type: docker
 
 name: svelte components
 
-secrets:
-  - source: NPM_TOKEN
-    target: NPM_TOKEN
-
 steps:
   - name: install dependencies
     image: node:18-alpine
@@ -30,8 +26,11 @@ steps:
 
   - name: publish, if new version
     image: node:18-alpine
+    environment:
+      NPM_TOKEN:
+        from_secret: NPM_TOKEN
     commands:
       - NAME=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("package.json")).name)')
       - VERSION=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("package.json")).version)')
-      - npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
-      - ($(npm info "$NAME@$VERSION" >> /dev/null) && echo "no new version" ) || (npm install --include=dev && npm run package && npm publish)
+      - npm set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
+      - (npm info "$NAME@$VERSION" >> /dev/null && echo "no new version" ) || (npm install --include=dev && npm run package && npm publish)
