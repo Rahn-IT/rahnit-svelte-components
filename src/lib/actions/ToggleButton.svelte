@@ -7,7 +7,7 @@
 	export let off_icon: string | IconifyIcon;
 </script>
 
-<label class="swap btn-secondary swap-rotate btn-circle btn">
+<label class="swap-rotate btn btn-circle btn-secondary swap">
 	<!-- this hidden checkbox controls the state -->
 	<input bind:checked={value} type="checkbox" />
 

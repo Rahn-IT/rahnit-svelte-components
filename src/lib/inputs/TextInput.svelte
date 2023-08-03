@@ -16,7 +16,7 @@
 		{required}
 		{disabled}
 		{autocomplete}
-		class="text-text border-secondary focus:border-secondary-focus block w-full border-b-2 bg-transparent py-1.5 pl-3 pr-5 placeholder-transparent outline-none"
+		class="text-text block w-full border-b-2 border-secondary bg-transparent py-1.5 pl-3 pr-5 placeholder-transparent outline-none focus:border-secondary-focus"
 		style="min-height: 80px"
 		placeholder={hasFocus ? '' : ' '}
 		on:focus={() => (hasFocus = true)}
