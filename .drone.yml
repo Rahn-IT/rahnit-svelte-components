@@ -6,7 +6,6 @@ name: svelte components
 steps:
   - name: lint-check-build
     image: node:18-alpine
-    working_dir: frontend/
     commands:
       - npm install --include=dev
       - npm run lint
