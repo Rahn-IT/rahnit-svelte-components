@@ -13,16 +13,22 @@ steps:
     image: node:18-alpine
     commands:
       - npm run lint
+    depends_on:
+      - install dependencies
 
   - name: check
     image: node:18-alpine
     commands:
       - npm run check
+    depends_on:
+      - install dependencies
 
   - name: test-build
     image: node:18-alpine
     commands:
       - npm run package
+    depends_on:
+      - install dependencies
 
   - name: publish, if new version
     image: node:18-alpine
@@ -36,3 +42,8 @@ steps:
       - echo email="luca@it-rahn.de" >> .npmrc
       - echo always-auth=true >> .npmrc
       - (npm info "$NAME@$VERSION" >> /dev/null && echo "no new version" ) || (npm install --include=dev && npm run package && npm publish)
+    depends_on:
+      - install dependencies
+      - lint
+      - check
+      - test-build
