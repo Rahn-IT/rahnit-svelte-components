@@ -18,12 +18,14 @@
 
 	let valid: boolean = true;
 
-	$: checkInput(value);
-	function checkInput(value: string) {
+	$: checkInput(value, pattern);
+	function checkInput(value: string, pattern: RegExp | null) {
 		valid = pattern === null || pattern.test(value);
 	}
 
-	const validator: Validator | undefined = getContext('validator')?.getValidator();
+	const validator: Validator | undefined = getContext<{ getValidator: () => Validator }>(
+		'validator'
+	)?.getValidator();
 	$: validator?.validate(valid);
 </script>
 

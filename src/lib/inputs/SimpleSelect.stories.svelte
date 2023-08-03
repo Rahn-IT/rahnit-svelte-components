@@ -37,7 +37,13 @@
 		}
 	];
 
-	let selected;
+	let selected: Option<number> | Option<string> | null = null;
+
+	const allOptions: (number | string | null)[] = (
+		numberOptions.map((o) => o.value) as (number | string | null)[]
+	)
+		.concat(textOptions.map((o) => o.value))
+		.concat([null]);
 </script>
 
 <Meta
@@ -45,10 +51,7 @@
 	component={SimpleSelect}
 	argTypes={{
 		selected: {
-			options: numberOptions
-				.map((o) => o.value)
-				.concat(textOptions.map((o) => o.value))
-				.concat([null]),
+			options: allOptions,
 			control: { type: 'select' }
 		},
 		options: {
@@ -60,6 +63,9 @@
 			control: { type: 'select' }
 		}
 	}}
+	args={{
+		options: 'numbers'
+	}}
 />
 
 <Template let:args>
@@ -68,9 +74,4 @@
 	<SimpleSelect {...args} bind:selected />
 </Template>
 
-<Story
-	name="Primary"
-	args={{
-		options: 'numbers'
-	}}
-/>
+<Story name="Primary" />

@@ -7,10 +7,10 @@
 	let value: string = '';
 </script>
 
-<Meta title="Inputs/Form" component={Form} />
+<Meta title="Inputs/Form" component={Form} argTypes={{}} />
 
 <Template>
-	<Form bind:valid>
+	<Form bind:valid aria_label="test">
 		<StringInput
 			label="test"
 			bind:value
@@ -31,4 +31,4 @@
 	{/if}
 </Template>
 
-<Story name="Primary" argTypes={{}} />
+<Story name="Primary" />

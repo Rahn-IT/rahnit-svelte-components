@@ -2,6 +2,7 @@
 	import { afterUpdate } from 'svelte';
 	import YearInput from './YearInput.svelte';
 	import MonthInput from './MonthInput.svelte';
+	import type { Month } from './types.js';
 	export let pastOnly = false;
 
 	export let value: null | Date = null;
@@ -13,7 +14,7 @@
 	$: if (value !== null) displayDate = new Date(value);
 
 	let year: number;
-	let month: number;
+	let month: Month;
 	updateInputs(displayDate);
 
 	function setDay(day: number) {
@@ -43,7 +44,7 @@
 		if (ignoreUpdate) return;
 		ignoreUpdate = true;
 		year = displayDate.getFullYear();
-		month = displayDate.getMonth();
+		month = displayDate.getMonth() as Month;
 	}
 
 	$: monthDate = new Date(displayDate.getFullYear(), displayDate.getMonth() + 1, 0);

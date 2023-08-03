@@ -3,10 +3,10 @@
 	import { crossfade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
-	import RemoveIcon from '@iconify-icons/mdi/minus';
-	import AddIcon from '@iconify-icons/mdi/plus';
-	import DragIcon from '@iconify-icons/mdi/reorder-horizontal';
-	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
+	import RemoveIcon from '@iconify-icons/mdi/minus.js';
+	import AddIcon from '@iconify-icons/mdi/plus.js';
+	import DragIcon from '@iconify-icons/mdi/reorder-horizontal.js';
+	import Icon from '../Icon.js';
 
 	const [send, receive] = crossfade({});
 	const dispatch = createEventDispatcher();

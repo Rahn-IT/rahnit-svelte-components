@@ -39,10 +39,20 @@
 
 	$: drawZoom.set(zoomLevel);
 
-	$: maxX = (containerWidth / 4) * 3 - containerWidth / 2;
-	$: minX = -contentWidth + containerWidth - maxX - containerWidth;
-	$: maxY = (containerHeight / 4) * 3 - containerHeight / 2;
-	$: minY = -contentHeight + containerHeight - maxY - containerHeight;
+	$: maxX =
+		containerWidth === undefined ? Number.MAX_VALUE : (containerWidth / 4) * 3 - containerWidth / 2;
+	$: minX =
+		containerWidth === undefined || contentWidth === undefined
+			? Number.MIN_VALUE
+			: -contentWidth + containerWidth - maxX - containerWidth;
+	$: maxY =
+		containerHeight === undefined
+			? Number.MAX_VALUE
+			: (containerHeight / 4) * 3 - containerHeight / 2;
+	$: minY =
+		containerHeight === undefined || contentHeight === undefined
+			? Number.MIN_VALUE
+			: -contentHeight + containerHeight - maxY - containerHeight;
 
 	let setDirectly = false;
 
@@ -113,6 +123,7 @@
 	let content: HTMLDivElement | undefined;
 
 	export function panTo(element: HTMLElement | SVGElement, instant: boolean = false) {
+		if (content === undefined) return;
 		//check if element is a child of container
 		if (!content.contains(element)) {
 			console.error('The element is not part of this container', element);
@@ -127,12 +138,14 @@
 				relativeX += el.offsetLeft;
 				relativeY += el.offsetTop;
 			} else if (el instanceof SVGElement) {
-				if (el.attributes.x !== undefined) {
-					relativeX += Number(el.attributes.x.value);
+				const attrX = el.attributes.getNamedItem('x');
+				if (attrX !== null) {
+					relativeX += Number(attrX.value);
 				}
 
-				if (el.attributes.y !== undefined) {
-					relativeY += Number(el.attributes.y.value);
+				const attrY = el.attributes.getNamedItem('y');
+				if (attrY !== null) {
+					relativeY += Number(attrY.value);
 				}
 			} else {
 				console.error('Element is not an HTMLElement or SVGElement', el);
@@ -148,12 +161,15 @@
 			targetWidth = rect.width;
 			targetHeight = rect.height;
 		} else {
-			if (element.attributes.width === undefined || element.attributes.height === undefined) {
+			const attrWidth = element.attributes.getNamedItem('width');
+			const attrHeight = element.attributes.getNamedItem('height');
+
+			if (attrWidth === null || attrHeight === null) {
 				console.error('Element has no width or height', element);
 				return;
 			}
-			targetWidth = Number(element.attributes.width.value);
-			targetHeight = Number(element.attributes.height.value);
+			targetWidth = Number(attrWidth.value);
+			targetHeight = Number(attrHeight.value);
 		}
 
 		const newX = -(relativeX + targetWidth / zoomLevel / 2);

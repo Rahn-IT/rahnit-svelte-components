@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ToggleButton from '../actions/ToggleButton.svelte';
-	import MenuIcon from '@iconify-icons/mdi/menu';
-	import CloseIcon from '@iconify-icons/mdi/close';
+	import MenuIcon from '@iconify-icons/mdi/menu.js';
+	import CloseIcon from '@iconify-icons/mdi/close.js';
 
 	let leftOpen = false;
 	let rightOpen = false;

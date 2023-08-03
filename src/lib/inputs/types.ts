@@ -4,7 +4,7 @@ export type Action<T> = {
 	name: string;
 	icon: string | IconifyIcon;
 	key: string;
-	run: () => Promise<T> | string;
+	run: (() => Promise<T>) | string;
 };
 
 export type Option<T> = {

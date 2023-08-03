@@ -13,4 +13,5 @@ export { default as ColorInput } from './inputs/ColorInput.svelte';
 export { default as DateInput } from './inputs/date/DateInput.svelte';
 export { default as DateTimeInput } from './inputs/date/DateTimeInput.svelte';
 export { default as TextInput } from './inputs/TextInput.svelte';
+export { default as Icon } from './Icon.js';
 export { createPersistentStore } from './PersistentStore.js';

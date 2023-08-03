@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher } from 'svelte';
 
 	import { debounce as deb } from 'lodash';
 	import type { Action } from './types.js';
-	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
+	import Icon from '../Icon.js';
 	import LoadingContainer from '../containers/LoadingContainer.svelte';
 
 	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -72,6 +74,10 @@
 	}
 
 	async function runAction(action: Action<T | null>) {
+		if (typeof action.run === 'string') {
+			goto(action.run);
+			return;
+		}
 		let newSelected = await action.run();
 		if (newSelected !== null) {
 			select(newSelected);
@@ -190,7 +196,7 @@
 	<!-- Dropdown -->
 	<div
 		class="dropdown-content z-50 mt-1 flex w-full pl-4 transition-opacity duration-200 {toRender.length ||
-		loading > 0
+		loading
 			? ''
 			: '!opacity-0'}"
 	>

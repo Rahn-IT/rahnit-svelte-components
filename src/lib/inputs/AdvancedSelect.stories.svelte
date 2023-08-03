@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
 	import AdvancedSelect from './AdvancedSelect.svelte';
-	import AddIcon from '@iconify-icons/mdi/plus';
+	import AddIcon from '@iconify-icons/mdi/plus.js';
 	import type { Action } from './types.js';
 
 	let items: number[] = [];

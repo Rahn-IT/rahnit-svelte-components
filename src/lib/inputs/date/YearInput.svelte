@@ -54,8 +54,10 @@
 	let lastSelected: null | number;
 	let xDir: number = offset;
 	$: updateDirection(value);
-	function updateDirection(value) {
-		if (lastSelected !== null && lastSelected > value) {
+	function updateDirection(value: number | null) {
+		if (value === null || lastSelected === null) {
+			xDir = -offset;
+		} else if (lastSelected > value) {
 			xDir = -offset;
 		} else {
 			xDir = offset;

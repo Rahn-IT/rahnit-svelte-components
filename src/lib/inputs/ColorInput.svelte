@@ -1,14 +1,17 @@
 <script lang="ts">
-	import PoundIcon from '@iconify-icons/mdi/pound';
-	import PaletteIcon from '@iconify-icons/mdi/palette';
-	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
+	import PoundIcon from '@iconify-icons/mdi/pound.js';
+	import PaletteIcon from '@iconify-icons/mdi/palette.js';
+	import Icon from '../Icon.js';
 
 	export let label = '';
 
 	export let value: string;
 
-	function updateFromInput(event: InputEvent) {
-		let cursorPos: number = event.target.selectionStart;
+	function updateFromInput(event: KeyboardEvent) {
+		if (event.target === null || !(event.target instanceof HTMLInputElement)) return;
+
+		let cursorPos: number | null = event.target.selectionStart;
+		if (cursorPos === null) return;
 		if (event.key.length > 1 && event.key !== 'Backspace') {
 			return;
 		}

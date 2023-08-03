@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
+	import Icon from '../Icon.js';
 	import type { IconifyIcon } from '@iconify/types';
 
 	export let value = false;
