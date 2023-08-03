@@ -5,7 +5,7 @@
 
 <Meta title="Containers/SideMenuContainer" component={SideMenuContainer} />
 
-<Template let:args>
+<Template>
 	<div class="h-screen">
 		<SideMenuContainer>
 			<div slot="left">Left Slot</div>

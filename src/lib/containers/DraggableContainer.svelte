@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clamp, debounce, throttle } from 'lodash';
+	import { clamp } from 'lodash';
 	import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
 
@@ -44,8 +44,6 @@
 	$: maxY = (containerHeight / 4) * 3 - containerHeight / 2;
 	$: minY = -contentHeight + containerHeight - maxY - containerHeight;
 
-	let hovering = false;
-
 	let setDirectly = false;
 
 	$: calculateDraw(currentX, currentY, zoomLevel, containerWidth, containerHeight);
@@ -86,7 +84,7 @@
 		posY = currentY;
 	}
 
-	function handleMouseUp(event: MouseEvent) {
+	function handleMouseUp() {
 		posX = currentX;
 		posY = currentY;
 		isDragging = false;
@@ -175,8 +173,6 @@
 <div
 	class="relative h-full w-full overflow-hidden {isDragging ? 'cursor-grabbing' : 'cursor-move'}"
 	on:mousedown={handleMouseDown}
-	on:mouseenter={() => (hovering = true)}
-	on:mouseleave={() => (hovering = false)}
 	on:wheel|preventDefault={handleWheel}
 	bind:clientWidth={containerWidth}
 	bind:clientHeight={containerHeight}

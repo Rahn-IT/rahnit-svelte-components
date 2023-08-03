@@ -1,5 +1,4 @@
 <script lang="ts">
-	import StringInput from './StringInput.svelte';
 	import PoundIcon from '@iconify-icons/mdi/pound';
 	import PaletteIcon from '@iconify-icons/mdi/palette';
 	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';

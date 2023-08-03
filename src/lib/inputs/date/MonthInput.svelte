@@ -24,8 +24,8 @@
 
 		query = query.toLocaleLowerCase();
 		return Object.entries(months)
-			.filter(([key, value]) => value.toLocaleLowerCase().includes(query))
-			.map(([key, value]) => key);
+			.filter(([, value]) => value.toLocaleLowerCase().includes(query))
+			.map(([key]) => key);
 	}
 
 	const offset = 100;

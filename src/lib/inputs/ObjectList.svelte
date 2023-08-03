@@ -14,7 +14,7 @@
 	export let sortable = true;
 	export let editable = true;
 
-	type T = $$Generic<any>;
+	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 	export let items: T[];
 	export let itemKey: (item: T) => string = (item: T) => {
 		return JSON.stringify(item);
@@ -124,6 +124,7 @@
 
 	<!-- Items -->
 	{#each items as item, index (itemKey(item))}
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div
 			class="pointer-events-auto"
 			animate:flip={{ duration: 200 }}

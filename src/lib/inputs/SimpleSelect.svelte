@@ -3,7 +3,7 @@
 	import AdvancedSelect from './AdvancedSelect.svelte';
 	import type { Option } from './types.d.ts';
 
-	type T = $$Generic<any>;
+	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 	export let options: Option<T>[];
 	export let selected: T | null = null;

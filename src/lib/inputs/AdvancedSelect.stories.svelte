@@ -26,7 +26,7 @@
 				}
 			});
 		}
-		await new Promise(function (resolve, reject) {
+		await new Promise(function (resolve) {
 			setTimeout(resolve, 1000);
 		});
 		return act;

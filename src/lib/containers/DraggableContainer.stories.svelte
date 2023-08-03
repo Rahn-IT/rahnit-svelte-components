@@ -26,7 +26,7 @@
 
 <Meta title="Containers/DraggableContainer" component={DraggableContainer} />
 
-<Template let:args>
+<Template>
 	<div class="h-screen">
 		<DraggableContainer bind:this={container}>
 			<button class="btn" bind:this={buttonTop} on:click={click}>to Bottom</button>

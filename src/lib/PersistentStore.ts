@@ -1,6 +1,6 @@
 import { writable, type Writable } from 'svelte/store';
 
-const storeMap: { [key: string]: Writable<any> } = {};
+const storeMap: { [key: string]: Writable<any> } = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export function createPersistentStore<T>(key: string, initialValue: T) {
 	if (storeMap[key] !== undefined) {

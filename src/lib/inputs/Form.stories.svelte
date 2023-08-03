@@ -9,7 +9,7 @@
 
 <Meta title="Inputs/Form" component={Form} />
 
-<Template let:args>
+<Template>
 	<Form bind:valid>
 		<StringInput
 			label="test"

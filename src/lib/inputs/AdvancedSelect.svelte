@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher } from 'svelte';
-	import { fade } from 'svelte/transition';
 
-	import { debounce as deb, inRange } from 'lodash';
+	import { debounce as deb } from 'lodash';
 	import type { Action } from './types.js';
 	import Icon from '@iconify/svelte/dist/OfflineIcon.svelte';
 	import LoadingContainer from '../containers/LoadingContainer.svelte';
 
-	type T = $$Generic<any>;
+	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 	export let selected: T | null;
 	export let search: ((searchString: string) => Promise<T[]>) | null = null;
@@ -59,7 +58,7 @@
 			if (actions !== null) {
 				actionList = await actions(searchString);
 			}
-		} catch (error: any) {
+		} catch (error) {
 			console.error(error);
 		} finally {
 			loading = false;
@@ -210,7 +209,10 @@
 					>
 						{#if render.isItem}
 							{@const item = render.item}
+							<!-- svelte-ignore a11y-interactive-supports-focus -->
 							<div
+								role="option"
+								aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
 								class="flex h-full w-full items-center justify-start"
 								on:mousedown={() => select(item)}
 							>
@@ -218,7 +220,10 @@
 							</div>
 						{:else}
 							{@const action = render.action}
+							<!-- svelte-ignore a11y-interactive-supports-focus -->
 							<div
+								role="option"
+								aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
 								class="flex h-full w-full items-center justify-center"
 								on:mousedown={async () => runAction(action)}
 							>

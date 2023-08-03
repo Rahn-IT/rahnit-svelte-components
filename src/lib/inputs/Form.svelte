@@ -5,8 +5,7 @@
 	let className = '';
 	export { className as class };
 
-    export let aria_label: string;
-    export {aria_label as 'aria-label'};
+	export let aria_label: string;
 
 	let validators: Validator[] = [];
 
@@ -28,7 +27,7 @@
 		return validator;
 	}
 
-    setContext('validator', {getValidator});
+	setContext('validator', { getValidator });
 
 	export let valid = true;
 
