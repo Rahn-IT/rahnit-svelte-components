@@ -17,5 +17,5 @@ steps:
     commands:
       - NAME=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("package.json")).name)')
       - VERSION=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("package.json")).version)')
-      - npm info "$NAME@$VERSION" || (npm install --include=dev && npm run package && npm publish)
+      - ((npm info "$NAME@$VERSION" >> /dev/null) && echo "no new version" ) || (npm install --include=dev && npm run package && npm publish)
     secrets: [NPM_TOKEN]
