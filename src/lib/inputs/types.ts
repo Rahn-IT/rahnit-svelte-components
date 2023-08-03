@@ -4,7 +4,7 @@ export type Action<T> = {
 	name: string;
 	icon: string | IconifyIcon;
 	key: string;
-	run: () => Promise<T>;
+	run: () => Promise<T> | string;
 };
 
 export type Option<T> = {
@@ -13,13 +13,8 @@ export type Option<T> = {
 	icon?: string | IconifyIcon;
 };
 
-export type KeyedItem<T> = {
-	key: string | number;
-	value: T;
-};
-
 export type Validator = {
-	valid: boolean,
-	validate(valid: boolean): void
-	unsubscribe(): void
-}
+	valid: boolean;
+	validate(valid: boolean): void;
+	unsubscribe(): void;
+};

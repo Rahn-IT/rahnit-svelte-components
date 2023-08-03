@@ -1,5 +1,5 @@
 export { default as SimpleSelect } from './inputs/SimpleSelect.svelte';
-export type * from './inputs/types.js';
+export type { Action, Option, Validator } from './inputs/types.js';
 export { default as ObjectList } from './inputs/ObjectList.svelte';
 export { default as AdvancedSelect } from './inputs/AdvancedSelect.svelte';
 export { default as StringInput } from './inputs/StringInput.svelte';
@@ -10,4 +10,7 @@ export { default as DraggableContainer } from './containers/DraggableContainer.s
 export { default as SideMenuContainer } from './containers/SideMenuContainer.svelte';
 export { default as LoadingContainer } from './containers/LoadingContainer.svelte';
 export { default as ColorInput } from './inputs/ColorInput.svelte';
+export { default as DateInput } from './inputs/date/DateInput.svelte';
+export { default as DateTimeInput } from './inputs/date/DateTimeInput.svelte';
+export { default as TextInput } from './inputs/TextInput.svelte';
 export { createPersistentStore } from './PersistentStore.js';
