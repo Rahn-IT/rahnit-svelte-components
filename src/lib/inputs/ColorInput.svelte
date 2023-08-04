@@ -56,7 +56,6 @@
 </script>
 
 <div class="flex h-14 w-full py-2">
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		class="h-full cursor-pointer text-accent hover:text-accent-focus"
 		on:click={() => colorInput.click()}
