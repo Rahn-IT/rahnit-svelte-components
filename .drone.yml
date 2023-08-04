@@ -38,10 +38,7 @@ steps:
     commands:
       - NAME=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("package.json")).name)')
       - VERSION=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("package.json")).version)')
-      - echo "//registry.npmjs.org/:_auth=$NPM_TOKEN" >> .npmrc
-      - echo email="luca@it-rahn.de" >> .npmrc
-      - echo always-auth=true >> .npmrc
-      - cat .npmrc
+      - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
       - (npm info "$NAME@$VERSION" >> /dev/null && echo "no new version" ) || (npm install --include=dev && npm run package && npm publish)
     depends_on:
       - install dependencies
