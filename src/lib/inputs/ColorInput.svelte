@@ -51,13 +51,19 @@
 			display = newDisplay;
 		}
 	}
+
+	let colorInput: HTMLInputElement;
 </script>
 
 <div class="flex h-14 w-full py-2">
-	<Icon
-		icon={PaletteIcon}
-		class="h-full w-auto cursor-pointer text-accent hover:text-accent-focus"
-	/>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div
+		class="h-full cursor-pointer text-accent hover:text-accent-focus"
+		on:click={() => colorInput.click()}
+		aria-hidden="true"
+	>
+		<Icon icon={PaletteIcon} class="h-full w-auto " />
+	</div>
 	<div class="relative flex-1 rounded-md border border-secondary">
 		<!-- Label -->
 		{#if label.length > 0}
@@ -77,7 +83,7 @@
 			on:keydown={updateFromInput}
 		/>
 		<div class="absolute right-0 flex h-full w-12 items-center justify-center">
-			<div class="h-8 w-8 border" style:background-color={value} />
+			<input class="h-8 w-8 border cursor-pointer" type="color" bind:value bind:this={colorInput} />
 		</div>
 	</div>
 </div>
