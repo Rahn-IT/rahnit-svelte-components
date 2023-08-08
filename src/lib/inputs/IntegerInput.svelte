@@ -9,7 +9,6 @@
 	export let max: number = Number.MAX_SAFE_INTEGER;
 
 	export let patternErrorMessage: string = 'Must be a whole number'; // Error message when regex doesn't match
-	export let requiredErrorMessage: string = 'Required'; // Error message when empty
 	export let rangeErrorMessage: string = 'Must be between {min} and {max}'; // Error message when regex doesn't match
 
 	let stringValue = value.toString();
@@ -52,7 +51,6 @@
 	bind:value={stringValue}
 	placeholder="0"
 	{patternErrorMessage}
-	{requiredErrorMessage}
 	pattern={/^[0-9]+$/}
 	externalErrorMessage={errorMessage}
 />
