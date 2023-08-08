@@ -2,7 +2,7 @@
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
 	import IntegerInput from './IntegerInput.svelte';
 
-	let value: string = 0;
+	let value: number = 0;
 </script>
 
 <Meta

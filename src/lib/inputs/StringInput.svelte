@@ -15,8 +15,6 @@
 	export let requiredErrorMessage: string = 'Required'; // Error message when empty
 	export let externalErrorMessage: string = ''; // Error message when regex doesn't match
 
-	let valid: boolean = true;
-
 	const validator: Validator | undefined = getContext<{ getValidator: () => Validator }>(
 		'validator'
 	)?.getValidator();
