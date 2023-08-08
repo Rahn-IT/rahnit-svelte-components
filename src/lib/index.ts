@@ -15,4 +15,5 @@ export { default as DateTimeInput } from './inputs/date/DateTimeInput.svelte';
 export { default as TextInput } from './inputs/TextInput.svelte';
 export { default as Icon } from './Icon.js';
 export { default as FileInput } from './inputs/FileInput.svelte';
+export { default as IntegerInput } from './inputs/IntegerInput.svelte';
 export { createPersistentStore } from './PersistentStore.js';
