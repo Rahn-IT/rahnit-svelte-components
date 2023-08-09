@@ -17,6 +17,7 @@
 	let capital = '';
 
 	let selected: string | null = null;
+	let selected2: string | null = null;
 </script>
 
 <Meta title="Inputs/Form" component={Form} argTypes={{}} />
@@ -44,8 +45,16 @@
 				{ name: 'a', value: 'a' },
 				{ name: 'b', value: 'b' }
 			]}
-			label="Select"
+			label="Select Required"
 			required
+		/>
+		<SimpleSelect
+			bind:selected={selected2}
+			options={[
+				{ name: 'a', value: 'a' },
+				{ name: 'b', value: 'b' }
+			]}
+			label="Select"
 		/>
 		<div class="p-2">
 			<ToggleButton bind:value={showMore} on_icon={CloseIcon} off_icon={MenuIcon} />

@@ -9,6 +9,7 @@
 	import { debounce as deb } from 'lodash';
 	import type { Action, Validator } from './types.js';
 	import Icon from '../Icon.js';
+	import CloseIcon from '@iconify-icons/mdi/close.js';
 	import LoadingContainer from '../containers/LoadingContainer.svelte';
 
 	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -72,7 +73,7 @@
 		}
 	}
 
-	function select(option: T) {
+	function select(option: T | null) {
 		selected = option;
 		dispatch('change');
 	}
@@ -160,7 +161,6 @@
 		toRender = newRender.concat(ars);
 	}
 
-	$: console.log(required);
 	let showError: string | null = null;
 	$: {
 		if (required && selected === null) {
@@ -189,6 +189,7 @@
 		</div>
 	{/if}
 
+	<!-- Error Display -->
 	{#if showError !== null}
 		<span
 			transition:fade={{ duration: 150 }}
@@ -226,6 +227,16 @@
 				{placeholder}
 			/>
 		</div>
+
+		<!-- Empty Selected -->
+		{#if !required && selected !== null}
+			<button
+				class="p-1 absolute h-full right-0 hover:text-error cursor-pointer transition-colors"
+				on:click={() => select(null)}
+			>
+				<Icon class=" h-full w-auto" icon={CloseIcon} />
+			</button>
+		{/if}
 	</div>
 
 	<!-- Dropdown -->
@@ -237,7 +248,7 @@
 	>
 		<div
 			class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
-			style:height={loading ? '3rem' : toRender.length * 3 + 'rem'}
+			style:height={hasFocus ? (loading ? '3rem' : toRender.length * 3 + 'rem') : '0'}
 		>
 			<LoadingContainer {loading}>
 				{#each toRender as render, i (render.key)}

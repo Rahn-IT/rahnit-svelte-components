@@ -50,6 +50,9 @@
 		<AdvancedSelect bind:selected {actions} {search} {...args} let:item>
 			{item.toString()}
 		</AdvancedSelect>
+		<AdvancedSelect bind:selected {actions} {search} {...args} let:item>
+			{item.toString()}
+		</AdvancedSelect>
 	</div>
 </Template>
 
