@@ -35,12 +35,8 @@
 		// Check if any validators are invalid
 		const anyInvalid = validators.some((validator) => !validator.valid);
 
-		// Perform actions based on validation state
-		if (anyInvalid) {
-			valid = false;
-		} else {
-			// Validation succeeded
-			valid = true;
+		if (anyInvalid === valid) {
+			valid = !anyInvalid;
 		}
 	}
 </script>

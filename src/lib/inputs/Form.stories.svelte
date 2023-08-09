@@ -44,6 +44,7 @@
 				{ name: 'a', value: 'a' },
 				{ name: 'b', value: 'b' }
 			]}
+			label="Select"
 			required
 		/>
 		<div class="p-2">
