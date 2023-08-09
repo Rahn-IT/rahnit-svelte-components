@@ -11,8 +11,8 @@
 	const [send, receive] = crossfade({});
 	const dispatch = createEventDispatcher();
 
-	export let sortable = true;
-	export let editable = true;
+	export let sortable = false;
+	export let editable = false;
 
 	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 	export let items: T[];
