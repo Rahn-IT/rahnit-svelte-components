@@ -7,7 +7,6 @@
 	import MenuIcon from '@iconify-icons/mdi/menu.js';
 	import CloseIcon from '@iconify-icons/mdi/close.js';
 	import SimpleSelect from './SimpleSelect.svelte';
-	import { bind } from 'lodash';
 
 	let valid = true;
 	let value: string = '';
