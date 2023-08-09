@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import type { Validator } from './types.js';
 
@@ -15,10 +15,13 @@
 	export let requiredErrorMessage: string = 'Required'; // Error message when empty
 	export let externalErrorMessage: string = ''; // Error message when regex doesn't match
 
+	// Form validation start
 	const validator: Validator | undefined = getContext<{ getValidator: () => Validator }>(
 		'validator'
 	)?.getValidator();
 	$: validator?.validate(showError === null);
+	onDestroy(() => validator?.unsubscribe());
+	// Form validation stop
 
 	let showError: string | null = null;
 	$: {
@@ -34,29 +37,27 @@
 	}
 </script>
 
-<div class="w-full py-2">
-	<div class="relative w-full py-2">
-		<input
-			{id}
-			name={id}
-			bind:value
-			{required}
-			{placeholder}
-			class="text-text block w-full border-b-2 bg-transparent pb-1 pl-4 pr-5 pt-1.5 outline-none transition-colors duration-150
+<div class="relative w-full pt-2 pb-6">
+	<input
+		{id}
+		name={id}
+		bind:value
+		{required}
+		{placeholder}
+		class="text-text block w-full border-b-2 bg-transparent pb-1 pl-4 pr-5 pt-1.5 outline-none transition-colors duration-150
 			{showError === null ? 'border-secondary focus:border-secondary-focus' : 'border-error'}"
-			on:focus
-			on:blur
-		/>
-		<label for={id} class="pointer-events-none absolute left-4 top-0 transition-all text-xs">
-			{label}
-		</label>
-		{#if showError !== null}
-			<span
-				transition:fade={{ duration: 150 }}
-				class="pointer-events-none absolute -bottom-3.5 left-4 rounded bg-error px-1.5 pb-1 text-xs text-error-content"
-			>
-				{showError}
-			</span>
-		{/if}
-	</div>
+		on:focus
+		on:blur
+	/>
+	<label for={id} class="pointer-events-none absolute left-4 top-0 transition-all text-xs">
+		{label}
+	</label>
+	{#if showError !== null}
+		<span
+			transition:fade={{ duration: 150 }}
+			class="pointer-events-none absolute bottom-0 left-4 rounded bg-error px-1.5 pb-1 text-xs text-error-content"
+		>
+			{showError}
+		</span>
+	{/if}
 </div>

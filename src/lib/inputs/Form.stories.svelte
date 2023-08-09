@@ -3,10 +3,16 @@
 	import Form from './Form.svelte';
 	import StringInput from './StringInput.svelte';
 	import IntegerInput from './IntegerInput.svelte';
+	import ToggleButton from '../actions/ToggleButton.svelte';
+	import MenuIcon from '@iconify-icons/mdi/menu.js';
+	import CloseIcon from '@iconify-icons/mdi/close.js';
 
 	let valid = true;
 	let value: string = '';
 	let num: number = 0;
+
+	let showMore = false;
+	let capital = '';
 </script>
 
 <Meta title="Inputs/Form" component={Form} argTypes={{}} />
@@ -17,15 +23,29 @@
 			label="test"
 			bind:value
 			pattern={/^[a-z]*$/}
+			required
 			patternErrorMessage="Only small characters allowed!"
 		/>
 		<StringInput
 			label="test"
 			bind:value
 			pattern={/^[a-z]*$/}
+			required
 			patternErrorMessage="Only small characters allowed!"
 		/>
 		<IntegerInput bind:value={num} label="Number" min={5} max={10} />
+		<div class="p-2">
+			<ToggleButton bind:value={showMore} on_icon={CloseIcon} off_icon={MenuIcon} />
+		</div>
+		{#if showMore}
+			<StringInput
+				label="Capital letters"
+				bind:value={capital}
+				pattern={/^[A-Z]*$/}
+				required
+				patternErrorMessage="Only capital letters allowed!"
+			/>
+		{/if}
 	</Form>
 	{#if valid}
 		Form is valid

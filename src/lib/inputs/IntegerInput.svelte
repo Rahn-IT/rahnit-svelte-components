@@ -9,7 +9,7 @@
 	export let max: number = Number.MAX_SAFE_INTEGER;
 
 	export let patternErrorMessage: string = 'Must be a whole number'; // Error message when regex doesn't match
-	export let rangeErrorMessage: string = 'Must be between {min} and {max}'; // Error message when regex doesn't match
+	export let rangeErrorMessage: string = 'Must be between (min) and (max)'; // Error message when regex doesn't match
 
 	let stringValue = value.toString();
 
@@ -37,8 +37,8 @@
 	function updateErrorMessage(value: number, min: number, max: number, rangeErrorMessage: string) {
 		if (value > max || value < min) {
 			errorMessage = rangeErrorMessage
-				.replaceAll('{min}', min.toString())
-				.replaceAll('{max}', max.toString());
+				.replaceAll('(min)', min.toString())
+				.replaceAll('(max)', max.toString());
 		} else {
 			errorMessage = '';
 		}
