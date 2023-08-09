@@ -9,6 +9,7 @@
 	export let selected: T | null = null;
 	let selectedOption: Option<T> | null = null;
 	export let label = '';
+	export let required = false;
 	export let optionKey: (option: T) => string = (option: T) => {
 		return JSON.stringify(option);
 	};
@@ -76,7 +77,7 @@
 	}
 </script>
 
-<AdvancedSelect on:change {label} {search} bind:selected={selectedOption} let:item>
+<AdvancedSelect on:change {label} {search} bind:selected={selectedOption} let:item {required}>
 	<div class="flex h-full w-full items-center justify-start">
 		{item.name}
 	</div>

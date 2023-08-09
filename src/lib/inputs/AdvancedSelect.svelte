@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
+
 	import { goto } from '$app/navigation';
 
 	import { flip } from 'svelte/animate';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext, onDestroy } from 'svelte';
 
 	import { debounce as deb } from 'lodash';
-	import type { Action } from './types.js';
+	import type { Action, Validator } from './types.js';
 	import Icon from '../Icon.js';
 	import LoadingContainer from '../containers/LoadingContainer.svelte';
 
@@ -17,6 +19,8 @@
 	export let debounce = false;
 	export let placeholder = 'Suche';
 	export let display_loading = false;
+	export let required = false;
+	export let requiredErrorMessage = 'Required';
 
 	export let label = '';
 
@@ -155,9 +159,27 @@
 
 		toRender = newRender.concat(ars);
 	}
+
+	$: console.log(required);
+	let showError: string | null = null;
+	$: {
+		if (required && selected === null) {
+			showError = requiredErrorMessage;
+		} else {
+			showError = null;
+		}
+	}
+
+	// Form validation start
+	const validator: Validator | undefined = getContext<{ getValidator: () => Validator }>(
+		'validator'
+	)?.getValidator();
+	$: validator?.validate(showError === null);
+	onDestroy(() => validator?.unsubscribe());
+	// Form validation stop
 </script>
 
-<div class="dropdown relative h-14 w-full py-2">
+<div class="dropdown relative w-full py-2 pb-6">
 	<!-- Label -->
 	{#if label.length > 0}
 		<div
@@ -167,7 +189,20 @@
 		</div>
 	{/if}
 
-	<div class="relative h-full w-full overflow-hidden rounded-md border border-secondary">
+	{#if showError !== null}
+		<span
+			transition:fade={{ duration: 150 }}
+			class="pointer-events-none absolute bottom-0 left-4 rounded bg-error px-1.5 pb-1 text-xs text-error-content"
+		>
+			{showError}
+		</span>
+	{/if}
+
+	<div
+		class="relative h-12 w-full overflow-hidden rounded-md border {showError === null
+			? 'border-secondary'
+			: 'border-error'}"
+	>
 		<!-- Display Selected Item -->
 		<div class="absolute h-full w-full px-4">
 			{#if selected !== undefined && selected !== null}
@@ -202,12 +237,12 @@
 	>
 		<div
 			class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
-			style:height={loading ? '2.5rem' : toRender.length * 2.5 + 'rem'}
+			style:height={loading ? '3rem' : toRender.length * 3 + 'rem'}
 		>
 			<LoadingContainer {loading}>
 				{#each toRender as render, i (render.key)}
 					<div
-						class="h-10 cursor-pointer px-4 hover:bg-base-300"
+						class="h-12 cursor-pointer px-4 hover:bg-base-300"
 						class:bg-base-300={selectedOptionIndex === i}
 						animate:flip={{
 							duration: 200

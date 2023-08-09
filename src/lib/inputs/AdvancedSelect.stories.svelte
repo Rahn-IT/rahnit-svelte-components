@@ -35,7 +35,15 @@
 	let selected: number | null = null;
 </script>
 
-<Meta title="Inputs/AdvancedSelect" component={AdvancedSelect} />
+<Meta
+	title="Inputs/AdvancedSelect"
+	component={AdvancedSelect}
+	argTypes={{
+		label: { control: { type: 'text' } },
+		required: { control: { type: 'boolean' } },
+		requiredErrorMessage: { control: { type: 'text' } }
+	}}
+/>
 
 <Template let:args>
 	<div class="h-screen">

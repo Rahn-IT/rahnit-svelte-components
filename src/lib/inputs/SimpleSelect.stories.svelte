@@ -70,8 +70,8 @@
 
 <Template let:args>
 	<SimpleSelect {...args} bind:selected />
-	{selected}
 	<SimpleSelect {...args} bind:selected />
+	{selected}
 </Template>
 
 <Story name="Primary" />
