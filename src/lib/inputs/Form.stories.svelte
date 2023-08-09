@@ -6,6 +6,8 @@
 	import ToggleButton from '../actions/ToggleButton.svelte';
 	import MenuIcon from '@iconify-icons/mdi/menu.js';
 	import CloseIcon from '@iconify-icons/mdi/close.js';
+	import SimpleSelect from './SimpleSelect.svelte';
+	import { bind } from 'lodash';
 
 	let valid = true;
 	let value: string = '';
@@ -13,6 +15,8 @@
 
 	let showMore = false;
 	let capital = '';
+
+	let selected: string | null = null;
 </script>
 
 <Meta title="Inputs/Form" component={Form} argTypes={{}} />
@@ -34,6 +38,14 @@
 			patternErrorMessage="Only small characters allowed!"
 		/>
 		<IntegerInput bind:value={num} label="Number" min={5} max={10} />
+		<SimpleSelect
+			bind:selected
+			options={[
+				{ name: 'a', value: 'a' },
+				{ name: 'b', value: 'b' }
+			]}
+			required
+		/>
 		<div class="p-2">
 			<ToggleButton bind:value={showMore} on_icon={CloseIcon} off_icon={MenuIcon} />
 		</div>
