@@ -15,7 +15,7 @@
 	import type { Month } from './types.js';
 
 	export let label = '';
-	export let value: string | null = '';
+	export let value: string | null;
 	export let required = false;
 	export let requiredErrorMessage = 'Required';
 	export let invalidErrorMessage = 'Invalid Date';
@@ -75,7 +75,7 @@
 
 	let errorMessage = '';
 	$: {
-		if (required && value === null) {
+		if (required && value === null && value !== '') {
 			errorMessage = requiredErrorMessage;
 		} else if (value === null && (day !== null || month !== null || year !== null)) {
 			errorMessage = invalidErrorMessage;

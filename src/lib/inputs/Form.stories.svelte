@@ -8,6 +8,7 @@
 	import CloseIcon from '@iconify-icons/mdi/close.js';
 	import SimpleSelect from './SimpleSelect.svelte';
 	import ErrorAttachmentContainer from '../containers/ErrorAttachmentContainer.svelte';
+	import DateInput from './date/DateInput.svelte';
 
 	let valid = true;
 	let value: string = '';
@@ -61,6 +62,8 @@
 			]}
 			label="Select"
 		/>
+		<DateInput label="Date" value={null} />
+		<DateInput label="Date" value={null} required />
 		<div class="p-2">
 			<ToggleButton bind:value={showMore} on_icon={CloseIcon} off_icon={MenuIcon} />
 		</div>
