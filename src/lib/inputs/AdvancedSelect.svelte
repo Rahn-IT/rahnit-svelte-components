@@ -11,6 +11,7 @@
 	import Icon from '../Icon.js';
 	import CloseIcon from '@iconify-icons/mdi/close.js';
 	import LoadingContainer from '../containers/LoadingContainer.svelte';
+	import ErrorAttachmentContainer from '../containers/ErrorAttachmentContainer.svelte';
 
 	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -161,135 +162,119 @@
 		toRender = newRender.concat(ars);
 	}
 
-	let showError: string | null = null;
+	let errorMessage: string = '';
 	$: {
 		if (required && selected === null) {
-			showError = requiredErrorMessage;
+			errorMessage = requiredErrorMessage;
 		} else {
-			showError = null;
+			errorMessage = '';
 		}
 	}
-
-	// Form validation start
-	const validator: Validator | undefined = getContext<{ getValidator: () => Validator }>(
-		'validator'
-	)?.getValidator();
-	$: validator?.validate(showError === null);
-	onDestroy(() => validator?.unsubscribe());
-	// Form validation stop
 </script>
 
-<div class="dropdown relative w-full py-2 pb-6">
-	<!-- Label -->
-	{#if label.length > 0}
+<ErrorAttachmentContainer {errorMessage}>
+	<div class="relative w-full pt-2">
+		<!-- Label -->
+		{#if label.length > 0}
+			<div
+				class="text-text pointer-events-none absolute left-3 top-0 z-10 bg-base-100 px-1.5 text-xs"
+			>
+				{label}
+			</div>
+		{/if}
+
 		<div
-			class="text-text pointer-events-none absolute left-3 top-0 z-10 bg-base-100 px-1.5 text-xs"
+			class="relative h-12 w-full overflow-hidden rounded-md border {errorMessage.length
+				? 'border-error'
+				: 'border-secondary'}"
 		>
-			{label}
-		</div>
-	{/if}
+			<!-- Display Selected Item -->
+			<div class="absolute h-full w-full px-4">
+				{#if selected !== undefined && selected !== null}
+					<div class="flex h-full w-full items-center justify-start">
+						<slot item={selected} />
+					</div>
+				{/if}
+			</div>
 
-	<!-- Error Display -->
-	{#if showError !== null}
-		<span
-			transition:fade={{ duration: 150 }}
-			class="pointer-events-none absolute bottom-0 left-4 rounded bg-error px-1.5 pb-1 text-xs text-error-content"
-		>
-			{showError}
-		</span>
-	{/if}
+			<!-- Search -->
+			<div class="absolute h-full w-full">
+				<input
+					bind:value={searchString}
+					type="text"
+					class="h-full w-full bg-transparent px-4 outline-none focus:bg-base-100"
+					class:placeholder-transparent={selected !== undefined && selected !== null && !hasFocus}
+					on:focus={() => (hasFocus = true)}
+					on:blur={() => (hasFocus = false)}
+					on:keydown={handleKeyBoardSelect}
+					bind:this={input}
+					{placeholder}
+				/>
+			</div>
 
-	<div
-		class="relative h-12 w-full overflow-hidden rounded-md border {showError === null
-			? 'border-secondary'
-			: 'border-error'}"
-	>
-		<!-- Display Selected Item -->
-		<div class="absolute h-full w-full px-4">
-			{#if selected !== undefined && selected !== null}
-				<div class="flex h-full w-full items-center justify-start">
-					<slot item={selected} />
-				</div>
+			<!-- Empty Selected -->
+			{#if !required && selected !== null}
+				<button
+					class="p-1 absolute h-full right-0 hover:text-error cursor-pointer transition-colors"
+					on:click={() => select(null)}
+				>
+					<Icon class=" h-full w-auto" icon={CloseIcon} />
+				</button>
 			{/if}
 		</div>
 
-		<!-- Search -->
-		<div class="absolute h-full w-full">
-			<input
-				bind:value={searchString}
-				type="text"
-				class="h-full w-full bg-transparent px-4 outline-none focus:bg-base-100"
-				class:placeholder-transparent={selected !== undefined && selected !== null && !hasFocus}
-				on:focus={() => (hasFocus = true)}
-				on:blur={() => (hasFocus = false)}
-				on:keydown={handleKeyBoardSelect}
-				bind:this={input}
-				{placeholder}
-			/>
-		</div>
-
-		<!-- Empty Selected -->
-		{#if !required && selected !== null}
-			<button
-				class="p-1 absolute h-full right-0 hover:text-error cursor-pointer transition-colors"
-				on:click={() => select(null)}
-			>
-				<Icon class=" h-full w-auto" icon={CloseIcon} />
-			</button>
-		{/if}
-	</div>
-
-	<!-- Dropdown -->
-	<div
-		class="dropdown-content z-50 mt-1 flex w-full pl-4 transition-opacity duration-200 {toRender.length ||
-		loading
-			? ''
-			: '!opacity-0'}"
-	>
+		<!-- Dropdown -->
 		<div
-			class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
-			style:height={hasFocus ? (loading ? '3rem' : toRender.length * 3 + 'rem') : '0'}
+			class="z-50 mt-1 flex w-full pl-4 absolute transition-opacity duration-200 {toRender.length >
+				0 && hasFocus
+				? ''
+				: '!opacity-0'}"
 		>
-			<LoadingContainer {loading}>
-				{#each toRender as render, i (render.key)}
-					<div
-						class="h-12 cursor-pointer px-4 hover:bg-base-300"
-						class:bg-base-300={selectedOptionIndex === i}
-						animate:flip={{
-							duration: 200
-						}}
-					>
-						{#if render.isItem}
-							{@const item = render.item}
-							<!-- svelte-ignore a11y-interactive-supports-focus -->
-							<div
-								role="option"
-								aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
-								class="flex h-full w-full items-center justify-start"
-								on:mousedown={() => select(item)}
-							>
-								<slot {item} />
-							</div>
-						{:else}
-							{@const action = render.action}
-							<!-- svelte-ignore a11y-interactive-supports-focus -->
-							<div
-								role="option"
-								aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
-								class="flex h-full w-full items-center justify-center"
-								on:mousedown={async () => runAction(action)}
-							>
-								{#if action.icon !== null}
-									<div class="h-full">
-										<Icon class="h-full w-auto" icon={action.icon} />
-									</div>
-								{/if}
-								{action.name}
-							</div>
-						{/if}
-					</div>
-				{/each}
-			</LoadingContainer>
+			<div
+				class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
+				style:height={hasFocus ? (loading ? '3rem' : toRender.length * 3 + 'rem') : '0'}
+			>
+				<LoadingContainer {loading}>
+					{#each toRender as render, i (render.key)}
+						<div
+							class="h-12 cursor-pointer px-4 hover:bg-base-300"
+							class:bg-base-300={selectedOptionIndex === i}
+							animate:flip={{
+								duration: 200
+							}}
+						>
+							{#if render.isItem}
+								{@const item = render.item}
+								<!-- svelte-ignore a11y-interactive-supports-focus -->
+								<div
+									role="option"
+									aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
+									class="flex h-full w-full items-center justify-start"
+									on:mousedown={() => select(item)}
+								>
+									<slot {item} />
+								</div>
+							{:else}
+								{@const action = render.action}
+								<!-- svelte-ignore a11y-interactive-supports-focus -->
+								<div
+									role="option"
+									aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
+									class="flex h-full w-full items-center justify-center"
+									on:mousedown={async () => runAction(action)}
+								>
+									{#if action.icon !== null}
+										<div class="h-full">
+											<Icon class="h-full w-auto" icon={action.icon} />
+										</div>
+									{/if}
+									{action.name}
+								</div>
+							{/if}
+						</div>
+					{/each}
+				</LoadingContainer>
+			</div>
 		</div>
 	</div>
-</div>
+</ErrorAttachmentContainer>

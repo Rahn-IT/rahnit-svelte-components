@@ -7,6 +7,7 @@
 	import MenuIcon from '@iconify-icons/mdi/menu.js';
 	import CloseIcon from '@iconify-icons/mdi/close.js';
 	import SimpleSelect from './SimpleSelect.svelte';
+	import ErrorAttachmentContainer from '../containers/ErrorAttachmentContainer.svelte';
 
 	let valid = true;
 	let value: string = '';
@@ -17,12 +18,17 @@
 
 	let selected: string | null = null;
 	let selected2: string | null = null;
+
+	let customError = '';
 </script>
 
 <Meta title="Inputs/Form" component={Form} argTypes={{}} />
 
 <Template>
 	<Form bind:valid aria_label="test">
+		<ErrorAttachmentContainer errorMessage={customError}>
+			<input class="border" bind:value={customError} />
+		</ErrorAttachmentContainer>
 		<StringInput
 			label="test"
 			bind:value
