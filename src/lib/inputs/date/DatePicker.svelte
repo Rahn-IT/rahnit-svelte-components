@@ -94,12 +94,6 @@
 
 		const nextDays = 7 - ((prevDays + daysThisMonth) % 7);
 		futureDaysArray = Array.from({ length: nextDays }, (_, index) => index + 1);
-
-		console.log('year', year);
-		console.log('month', month);
-		console.log('selectedDay', selectedDay);
-		console.log('selectedMonth', selectedMonth);
-		console.log('selectedYear', selectedYear);
 	}
 </script>
 
