@@ -4,6 +4,7 @@
 	import type { Validator } from '../inputs/types.js';
 
 	export let errorMessage: string;
+	export let skipPadding = false;
 	$: displayError = errorMessage.trim();
 
 	// Form validation start
@@ -15,7 +16,7 @@
 	// Form validation stop
 </script>
 
-<div class="relative pb-6 w-full">
+<div class="relative w-full" class:pb-6={!skipPadding}>
 	<div class="p-0 w-full">
 		<slot />
 	</div>

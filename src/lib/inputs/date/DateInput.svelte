@@ -18,6 +18,7 @@
 	export let value: string | null = '';
 	export let required = false;
 	export let requiredErrorMessage = 'Required';
+	export let invalidErrorMessage = 'Invalid Date';
 	export let invalidDayErrorMessage = 'Invalid Day';
 
 	let day: number | null;
@@ -73,7 +74,15 @@
 	}
 
 	let errorMessage = '';
-	$: errorMessage = required && value === null ? requiredErrorMessage : '';
+	$: {
+		if (required && value === null) {
+			errorMessage = requiredErrorMessage;
+		} else if (value === null && (day !== null || month !== null || year !== null)) {
+			errorMessage = invalidErrorMessage;
+		} else {
+			errorMessage = '';
+		}
+	}
 </script>
 
 <div class="w-full relative">
@@ -83,32 +92,32 @@
 		{label}
 	</span>
 
-	<div class="flex flex-row gap-2">
-		<div class="w-12 flex-shrink-0 pt-2">
-			<ErrorAttachmentContainer {errorMessage}>
+	<ErrorAttachmentContainer {errorMessage} skipPadding>
+		<div class="flex flex-row gap-2">
+			<div class="w-12 flex-shrink-0 pt-2">
 				<button class=" w-full text-accent hover:text-accent-focus">
 					<Icon class="w-full h-auto" icon={CalendarIcon} />
 				</button>
-			</ErrorAttachmentContainer>
-		</div>
-		<DayInput
-			bind:value={day}
-			{month}
-			{year}
-			required
-			requiredErrorMessage=""
-			invalidErrorMessage={invalidDayErrorMessage}
-		/>
-		<MonthInput bind:value={month} required requiredErrorMessage="" />
-		<YearInput bind:value={year} required requiredErrorMessage="" />
-		{#if !required}
-			<div class="w-10 flex-shrink-0 pt-3">
-				<button class=" w-full text-base-content hover:text-error" on:click={() => empty()}>
-					<Icon class="w-full h-auto" icon={CloseIcon} />
-				</button>
 			</div>
-		{/if}
-	</div>
+			<DayInput
+				bind:value={day}
+				{month}
+				{year}
+				required
+				requiredErrorMessage=""
+				invalidErrorMessage={invalidDayErrorMessage}
+			/>
+			<MonthInput bind:value={month} required requiredErrorMessage="" />
+			<YearInput bind:value={year} required requiredErrorMessage="" />
+			{#if !required}
+				<div class="w-10 flex-shrink-0 pt-3">
+					<button class=" w-full text-base-content hover:text-error" on:click={() => empty()}>
+						<Icon class="w-full h-auto" icon={CloseIcon} />
+					</button>
+				</div>
+			{/if}
+		</div>
+	</ErrorAttachmentContainer>
 
 	<!-- DatePicker -->
 	<div class="absolute top-0">
