@@ -21,6 +21,7 @@
 	export let display_loading = false;
 	export let required = false;
 	export let requiredErrorMessage = 'Required';
+	export let externalErrorMessage = '';
 
 	export let label = '';
 
@@ -165,7 +166,7 @@
 		if (required && selected === null) {
 			errorMessage = requiredErrorMessage;
 		} else {
-			errorMessage = '';
+			errorMessage = externalErrorMessage;
 		}
 	}
 </script>

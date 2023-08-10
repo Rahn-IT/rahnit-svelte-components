@@ -1,10 +1,14 @@
 <script lang="ts">
 	import AdvancedSelect from '../AdvancedSelect.svelte';
 	import { fly } from 'svelte/transition';
+	import type { Month } from './types.js';
 
 	export let value: number | null = null;
+	export let year: number | null = null;
+	export let month: Month | null = null;
 	export let required = false;
 	export let requiredErrorMessage = 'Required';
+	export let invalidErrorMessage = 'Invalid Day';
 
 	function guessDay(query: string): number[] {
 		let queryNumber = parseInt(query);
@@ -49,6 +53,25 @@
 		}
 		lastSelected = value;
 	}
+
+	let errorMessage = '';
+
+	$: checkDay(value, month, year);
+	function checkDay(day: number | null, month: Month | null, year: number | null) {
+		if (year === null || month === null || day === null) {
+			errorMessage = '';
+			return;
+		}
+		const monthDate = new Date(year, month + 1, 0);
+		const daysThisMonth = monthDate.getDate();
+		console.log('daysThisMonth', daysThisMonth);
+		console.log('day', day);
+		if (day < 1 || day > daysThisMonth) {
+			errorMessage = invalidErrorMessage;
+		} else {
+			errorMessage = '';
+		}
+	}
 </script>
 
 <AdvancedSelect
@@ -59,6 +82,7 @@
 	{required}
 	placeholder="DD"
 	{requiredErrorMessage}
+	externalErrorMessage={errorMessage}
 >
 	{#key item}
 		<div in:fly={{ x: xDir, duration: 300 }}>

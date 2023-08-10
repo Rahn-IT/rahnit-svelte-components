@@ -2,7 +2,7 @@
 	import { afterUpdate } from 'svelte';
 
 	import Icon from '../../Icon.js';
-	import CalendarIcon from '@iconify-icons/mdi/calendar';
+	import CalendarIcon from '@iconify-icons/mdi/calendar.js';
 	import CloseIcon from '@iconify-icons/mdi/close.js';
 
 	import ErrorAttachmentContainer from '../../containers/ErrorAttachmentContainer.svelte';
@@ -12,14 +12,16 @@
 	import MonthInput from './MonthInput.svelte';
 	import YearInput from './YearInput.svelte';
 	import DatePicker from './DatePicker.svelte';
+	import type { Month } from './types.js';
 
 	export let label = '';
 	export let value: string | null = '';
 	export let required = false;
 	export let requiredErrorMessage = 'Required';
+	export let invalidDayErrorMessage = 'Invalid Day';
 
 	let day: number | null;
-	let month: number | null;
+	let month: Month | null;
 	let year: number | null;
 
 	let ignoreUpdate = false;
@@ -34,15 +36,13 @@
 
 		const parsedDate = new Date(value);
 		if (isNaN(parsedDate.getTime())) {
-			selectedDay = null;
-			selectedMonth = null;
-			selectedYear = null;
+			day = null;
+			month = null;
+			year = null;
 			return;
 		}
 
-		selectedYear = parsedDate.getFullYear();
-		selectedMonth = parsedDate.getMonth() as Month;
-		selectedDay = parsedDate.getDate();
+		day = parsedDate.getDate();
 		month = parsedDate.getMonth() as Month;
 		year = parsedDate.getFullYear();
 	}
@@ -78,7 +78,7 @@
 
 <div class="w-full relative">
 	<span
-		class="text-text pointer-events-none absolute left-20 top-0 z-10 bg-base-100 px-1.5 text-xs"
+		class="text-text pointer-events-none absolute left-16 top-0 z-10 bg-base-100 px-1.5 text-xs"
 	>
 		{label}
 	</span>
@@ -91,7 +91,14 @@
 				</button>
 			</ErrorAttachmentContainer>
 		</div>
-		<DayInput bind:value={day} required requiredErrorMessage="" />
+		<DayInput
+			bind:value={day}
+			{month}
+			{year}
+			required
+			requiredErrorMessage=""
+			invalidErrorMessage={invalidDayErrorMessage}
+		/>
 		<MonthInput bind:value={month} required requiredErrorMessage="" />
 		<YearInput bind:value={year} required requiredErrorMessage="" />
 		{#if !required}
