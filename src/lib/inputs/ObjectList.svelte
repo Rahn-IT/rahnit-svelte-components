@@ -108,16 +108,20 @@
 			style:left="{posX}px"
 			style:top="{posY}px"
 		>
-			<button class="w-12 cursor-grabbing p-1 opacity-30">
-				<Icon icon={DragIcon} class="h-auto w-full" />
-			</button>
+			<div class="flex justify-center items-center">
+				<button class="w-12 cursor-grabbing p-1 opacity-30">
+					<Icon icon={DragIcon} class="h-auto w-full" />
+				</button>
+			</div>
 			<div class="flex-1 pl-2">
 				<slot item={items[dragging]} index={dragging} />
 			</div>
 			{#if editable}
-				<button class="w-12 cursor-pointer p-1 hover:text-error">
-					<Icon icon={RemoveIcon} class="h-auto w-full" />
-				</button>
+				<div class="flex justify-center items-center">
+					<button class="w-12 cursor-pointer p-1 hover:text-error">
+						<Icon icon={RemoveIcon} class="h-auto w-full" />
+					</button>
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -138,23 +142,27 @@
 					out:send={{ key: index }}
 				>
 					{#if sortable}
-						<button
-							class="w-12 cursor-grab p-1 opacity-30"
-							on:mousedown={(event) => grab(index, event)}
-						>
-							<Icon icon={DragIcon} class="h-auto w-full" />
-						</button>
+						<div class="flex justify-center items-center">
+							<button
+								class="w-12 cursor-grab p-1 opacity-30"
+								on:mousedown={(event) => grab(index, event)}
+							>
+								<Icon icon={DragIcon} class="h-auto w-full" />
+							</button>
+						</div>
 					{/if}
 					<div class="flex flex-1 items-center justify-start pl-2">
 						<slot {item} {index} />
 					</div>
 					{#if editable}
-						<button
-							class="w-12 cursor-pointer p-1 hover:text-error"
-							on:click={() => removeItem(index)}
-						>
-							<Icon icon={RemoveIcon} class="h-auto w-full" />
-						</button>
+						<div class="flex justify-center items-center">
+							<button
+								class="w-12 cursor-pointer p-1 hover:text-error"
+								on:click={() => removeItem(index)}
+							>
+								<Icon icon={RemoveIcon} class="h-auto w-full" />
+							</button>
+						</div>
 					{/if}
 				</div>
 			{/if}
