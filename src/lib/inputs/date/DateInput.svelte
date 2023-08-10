@@ -1,38 +1,112 @@
 <script lang="ts">
+	import { afterUpdate } from 'svelte';
+
+	import Icon from '../../Icon.js';
+	import CalendarIcon from '@iconify-icons/mdi/calendar';
+	import CloseIcon from '@iconify-icons/mdi/close.js';
+
+	import ErrorAttachmentContainer from '../../containers/ErrorAttachmentContainer.svelte';
+	import OverlayContainer from '../../containers/OverlayContainer.svelte';
+
+	import DayInput from './DayInput.svelte';
+	import MonthInput from './MonthInput.svelte';
+	import YearInput from './YearInput.svelte';
+	import DatePicker from './DatePicker.svelte';
+
 	export let label = '';
-	export let id = '';
 	export let value: string | null = '';
 	export let required = false;
-	export let disabled = false;
-	export let autocomplete = 'off';
-	let hasFocus = false;
+	export let requiredErrorMessage = 'Required';
 
-	$: {
-		if (value !== null && value.length > 10) {
-			value = value?.substring(0, 10);
+	let day: number | null;
+	let month: number | null;
+	let year: number | null;
+
+	let ignoreUpdate = false;
+	afterUpdate(() => (ignoreUpdate = false));
+
+	$: updateFromValue(value);
+	function updateFromValue(value: string | null) {
+		if (ignoreUpdate) return;
+		ignoreUpdate = true;
+
+		if (value === null) return;
+
+		const parsedDate = new Date(value);
+		if (isNaN(parsedDate.getTime())) {
+			selectedDay = null;
+			selectedMonth = null;
+			selectedYear = null;
+			return;
+		}
+
+		selectedYear = parsedDate.getFullYear();
+		selectedMonth = parsedDate.getMonth() as Month;
+		selectedDay = parsedDate.getDate();
+		month = parsedDate.getMonth() as Month;
+		year = parsedDate.getFullYear();
+	}
+
+	$: updateFromInput(day, month, year);
+	function updateFromInput(day: number | null, month: number | null, year: number | null) {
+		if (ignoreUpdate) return;
+		ignoreUpdate = true;
+
+		if (day !== null && month !== null && year !== null) {
+			value =
+				year.toString().padStart(4, '0') +
+				'-' +
+				(month + 1).toString().padStart(2, '0') +
+				'-' +
+				day.toString().padStart(2, '0');
+		} else {
+			value = null;
 		}
 	}
+
+	function empty() {
+		ignoreUpdate = true;
+		value = null;
+		day = null;
+		month = null;
+		year = null;
+	}
+
+	let errorMessage = '';
+	$: errorMessage = required && value === null ? requiredErrorMessage : '';
 </script>
 
-<div class="relative pt-2">
-	<input
-		{id}
-		name={id}
-		bind:value
-		type="date"
-		{required}
-		{disabled}
-		{autocomplete}
-		class="text-text block w-full border-b-2 border-secondary bg-transparent py-1.5 pl-3 pr-5 placeholder-transparent outline-none focus:border-secondary-focus"
-		placeholder={hasFocus ? '' : ' '}
-		on:focus={() => (hasFocus = true)}
-		on:blur={() => (hasFocus = false)}
-		on:change
-	/>
-	<label
-		for={id}
-		class="text-text pointer-events-none absolute left-3 top-0 text-xs transition-all"
+<div class="w-full relative">
+	<span
+		class="text-text pointer-events-none absolute left-20 top-0 z-10 bg-base-100 px-1.5 text-xs"
 	>
 		{label}
-	</label>
+	</span>
+
+	<div class="flex flex-row gap-2">
+		<div class="w-12 flex-shrink-0 pt-2">
+			<ErrorAttachmentContainer {errorMessage}>
+				<button class=" w-full text-accent hover:text-accent-focus">
+					<Icon class="w-full h-auto" icon={CalendarIcon} />
+				</button>
+			</ErrorAttachmentContainer>
+		</div>
+		<DayInput bind:value={day} required requiredErrorMessage="" />
+		<MonthInput bind:value={month} required requiredErrorMessage="" />
+		<YearInput bind:value={year} required requiredErrorMessage="" />
+		{#if !required}
+			<div class="w-10 flex-shrink-0 pt-3">
+				<button class=" w-full text-base-content hover:text-error" on:click={() => empty()}>
+					<Icon class="w-full h-auto" icon={CloseIcon} />
+				</button>
+			</div>
+		{/if}
+	</div>
+
+	<!-- DatePicker -->
+	<div class="absolute top-0">
+		<OverlayContainer>
+			<DatePicker bind:value />
+		</OverlayContainer>
+	</div>
 </div>

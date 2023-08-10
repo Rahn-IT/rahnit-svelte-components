@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { getContext, onDestroy } from 'svelte';
-	import { fade } from 'svelte/transition';
 	import ErrorAttachmentContainer from '../containers/ErrorAttachmentContainer.svelte';
-	import type { Validator } from './types.js';
 
 	export let label = '';
 	export let id = (Math.random() * 16).toString(16);

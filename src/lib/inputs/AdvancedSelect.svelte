@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
-
 	import { goto } from '$app/navigation';
 
 	import { flip } from 'svelte/animate';
-	import { createEventDispatcher, getContext, onDestroy } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	import { debounce as deb } from 'lodash';
-	import type { Action, Validator } from './types.js';
+	import type { Action } from './types.js';
 	import Icon from '../Icon.js';
 	import CloseIcon from '@iconify-icons/mdi/close.js';
 	import LoadingContainer from '../containers/LoadingContainer.svelte';

@@ -5,6 +5,8 @@
 
 	export let allowedMonths: Month[] = Array.from(Array(12).keys()) as Month[];
 	export let value: Month | null = null;
+	export let required = false;
+	export let requiredErrorMessage = 'Required';
 	const date = new Date();
 	let months: { [key: number]: string } = {};
 	$: months = allowedMonths.reduce((result: { [key: number]: string }, month) => {
@@ -46,7 +48,15 @@
 	}
 </script>
 
-<AdvancedSelect on:change bind:selected={value} {search} let:item>
+<AdvancedSelect
+	on:change
+	bind:selected={value}
+	{search}
+	let:item
+	{required}
+	placeholder="MM"
+	{requiredErrorMessage}
+>
 	{#key item}
 		<div in:fly={{ x: xDir, duration: 300 }}>
 			{months[item]}

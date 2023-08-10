@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { getContext, onDestroy } from 'svelte';
-	import { type Validator } from '../inputs/types.ts';
+	import type { Validator } from '../inputs/types.js';
 
 	export let errorMessage: string;
 	$: displayError = errorMessage.trim();
@@ -15,8 +15,8 @@
 	// Form validation stop
 </script>
 
-<div class="relative pb-6">
-	<div class="p-0 m-0">
+<div class="relative pb-6 w-full">
+	<div class="p-0 w-full">
 		<slot />
 	</div>
 	{#if displayError.length > 0}

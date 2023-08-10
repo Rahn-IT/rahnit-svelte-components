@@ -5,6 +5,8 @@
 	export let prefixes: number[] = [20, 19, 18, 17];
 	export let pastOnly = false;
 	export let value: number | null = null;
+	export let required = false;
+	export let requiredErrorMessage = 'Required';
 	const digits = Array.from(Array(10).keys());
 	const currentYear = new Date().getFullYear();
 	const mistypeDigits = Array.from(Array(5).keys());
@@ -66,7 +68,15 @@
 	}
 </script>
 
-<AdvancedSelect on:change bind:selected={value} {search} let:item>
+<AdvancedSelect
+	on:change
+	bind:selected={value}
+	{search}
+	let:item
+	{required}
+	placeholder="YYYY"
+	{requiredErrorMessage}
+>
 	{#key item}
 		<div in:fly={{ x: xDir, duration: 300 }}>
 			{item}

@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
-	import DatePicker from './DatePicker.svelte';
+	import DateInput from './DateInput.svelte';
 
 	let date: string | null = null;
 </script>
 
-<Meta title="Inputs/Date/DatePicker" component={DatePicker} />
+<Meta title="Inputs/Date/DateInput" component={DateInput} />
 
 <Template let:args>
 	<div>
 		Datum: {date}
 	</div>
-	<DatePicker {...args} bind:value={date} />
+	<DateInput {...args} bind:value={date} />
 </Template>
 
 <Story name="Primary" />
