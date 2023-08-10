@@ -174,12 +174,12 @@
 				<div class="w-12 cursor-grab p-1" />
 			{/if}
 			<div class="flex-1 py-3 pl-2">
-				<div class="flex w-full items-center justify-center">
+				<div class="flex w-full justify-center">
 					<button
-						class="flex h-10 w-32 cursor-pointer justify-center rounded-md border border-secondary transition-all duration-500 hover:w-full hover:text-secondary-focus"
+						class="h-10 w-32 cursor-pointer text-center rounded-md border border-secondary transition-all duration-500 hover:w-full hover:text-secondary-focus"
 						on:click={() => addItem()}
 					>
-						<Icon icon={AddIcon} class="h-full w-auto" />
+						<Icon icon={AddIcon} class="h-full w-full" />
 					</button>
 				</div>
 			</div>
