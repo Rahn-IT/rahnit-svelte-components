@@ -33,7 +33,12 @@
 		if (ignoreUpdate) return;
 		ignoreUpdate = true;
 
-		if (value === null) return;
+		if (value === null) {
+			day = null;
+			month = null;
+			year = null;
+			return;
+		};
 
 		const parsedDate = new Date(value);
 		if (isNaN(parsedDate.getTime())) {
