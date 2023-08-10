@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
+
 	import { goto } from '$app/navigation';
 
 	import { flip } from 'svelte/animate';
@@ -223,57 +225,57 @@
 		</div>
 
 		<!-- Dropdown -->
-		<div
-			class="z-50 mt-1 flex w-full pl-4 absolute transition-opacity duration-200 {toRender.length >
-				0 && hasFocus
-				? ''
-				: '!opacity-0'}"
-		>
+		{#if toRender.length > 0 && hasFocus}
 			<div
-				class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
-				style:height={hasFocus ? (loading ? '3rem' : toRender.length * 3 + 'rem') : '0'}
+				class="z-50 mt-1 flex w-full pl-4 absolute transition-opacity duration-200"
+				transition:fade={{ duration: 150 }}
 			>
-				<LoadingContainer {loading}>
-					{#each toRender as render, i (render.key)}
-						<div
-							class="h-12 cursor-pointer px-4 hover:bg-base-300"
-							class:bg-base-300={selectedOptionIndex === i}
-							animate:flip={{
-								duration: 200
-							}}
-						>
-							{#if render.isItem}
-								{@const item = render.item}
-								<!-- svelte-ignore a11y-interactive-supports-focus -->
-								<div
-									role="option"
-									aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
-									class="flex h-full w-full items-center justify-start"
-									on:mousedown={() => select(item)}
-								>
-									<slot {item} />
-								</div>
-							{:else}
-								{@const action = render.action}
-								<!-- svelte-ignore a11y-interactive-supports-focus -->
-								<div
-									role="option"
-									aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
-									class="flex h-full w-full items-center justify-center"
-									on:mousedown={async () => runAction(action)}
-								>
-									{#if action.icon !== null}
-										<div class="h-full">
-											<Icon class="h-full w-auto" icon={action.icon} />
-										</div>
-									{/if}
-									{action.name}
-								</div>
-							{/if}
-						</div>
-					{/each}
-				</LoadingContainer>
+				<div
+					class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
+					style:height={hasFocus ? (loading ? '3rem' : toRender.length * 3 + 'rem') : '0'}
+				>
+					<LoadingContainer {loading}>
+						{#each toRender as render, i (render.key)}
+							<div
+								class="h-12 cursor-pointer px-4 hover:bg-base-300"
+								class:bg-base-300={selectedOptionIndex === i}
+								animate:flip={{
+									duration: 200
+								}}
+							>
+								{#if render.isItem}
+									{@const item = render.item}
+									<!-- svelte-ignore a11y-interactive-supports-focus -->
+									<div
+										role="option"
+										aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
+										class="flex h-full w-full items-center justify-start"
+										on:mousedown={() => select(item)}
+									>
+										<slot {item} />
+									</div>
+								{:else}
+									{@const action = render.action}
+									<!-- svelte-ignore a11y-interactive-supports-focus -->
+									<div
+										role="option"
+										aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
+										class="flex h-full w-full items-center justify-center"
+										on:mousedown={async () => runAction(action)}
+									>
+										{#if action.icon !== null}
+											<div class="h-full">
+												<Icon class="h-full w-auto" icon={action.icon} />
+											</div>
+										{/if}
+										{action.name}
+									</div>
+								{/if}
+							</div>
+						{/each}
+					</LoadingContainer>
+				</div>
 			</div>
-		</div>
+		{/if}
 	</div>
 </ErrorAttachmentContainer>
