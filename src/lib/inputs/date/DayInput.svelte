@@ -64,8 +64,6 @@
 		}
 		const monthDate = new Date(year, month + 1, 0);
 		const daysThisMonth = monthDate.getDate();
-		console.log('daysThisMonth', daysThisMonth);
-		console.log('day', day);
 		if (day < 1 || day > daysThisMonth) {
 			errorMessage = invalidErrorMessage;
 		} else {
