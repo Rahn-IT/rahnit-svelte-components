@@ -1,23 +1,24 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
+	import { fade, fly, scale, slide } from 'svelte/transition';
+
+	let classes = '';
+	export { classes as class };
 
 	export let loading: boolean;
 </script>
 
-<div class="relative h-full min-h-[2.5rem] w-full">
-	{#if loading}
+{#if loading}
+	<div class="relative h-full w-full">
+		<div class="h-20 w-20"></div>
 		<div
-			transition:fade
-			class="absolute flex h-full w-full flex-col flex-wrap content-center items-center justify-center gap-4"
+			class="absolute top-0 flex h-full w-full flex-col flex-wrap content-center items-center justify-center gap-4 p-2"
 		>
 			<div
 				class="box-border h-8 w-8 flex-shrink-0 animate-spin rounded-full border-2 border-t-4 border-secondary border-t-secondary-focus"
 			/>
 			<div>Loading</div>
 		</div>
-	{:else}
-		<div class="absolute h-full w-full" transition:fade>
-			<slot />
-		</div>
-	{/if}
-</div>
+	</div>
+{:else}
+	<slot />
+{/if}
