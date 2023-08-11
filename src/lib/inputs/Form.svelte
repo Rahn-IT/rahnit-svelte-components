@@ -41,6 +41,6 @@
 	}
 </script>
 
-<form class={className} aria-label={aria_label} novalidate>
+<div class={className} aria-label={aria_label}>
 	<slot />
-</form>
+</div>
