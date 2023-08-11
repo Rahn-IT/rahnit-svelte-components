@@ -1,9 +1,4 @@
 <script lang="ts">
-	import { fade, fly, scale, slide } from 'svelte/transition';
-
-	let classes = '';
-	export { classes as class };
-
 	export let loading: boolean;
 </script>
 

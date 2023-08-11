@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Meta, Template, Story } from '@storybook/addon-svelte-csf';
+	import { Meta, Story } from '@storybook/addon-svelte-csf';
 	import LoadingContainer from './LoadingContainer.svelte';
 </script>
 
@@ -12,8 +12,6 @@
 		}
 	}}
 />
-
-<Template let:args></Template>
 
 <Story name="Content Sizing" let:args>
 	<div class="p-2">
