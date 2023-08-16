@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ErrorAttachmentContainer from '$lib/containers/ErrorAttachmentContainer.svelte';
+	import ErrorAttachmentContainer from '../../containers/ErrorAttachmentContainer.svelte';
 
 	export let label = '';
 	export let id = '';
