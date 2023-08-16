@@ -220,7 +220,7 @@
 					class="h-full w-full bg-transparent px-4 outline-none focus:bg-base-100"
 					class:placeholder-transparent={selected !== undefined && selected !== null && !hasFocus}
 					on:focus={() => (hasFocus = true)}
-					on:blur={() => (hasFocus = false)}
+					on:blur={() => setTimeout(() => (hasFocus = false), 100)}
 					on:keydown={handleKeyBoardSelect}
 					bind:this={input}
 					{placeholder}
