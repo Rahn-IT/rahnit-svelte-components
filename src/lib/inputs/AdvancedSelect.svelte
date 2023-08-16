@@ -68,7 +68,6 @@
 
 	async function runSearch() {
 		loading = display_loading;
-		console.log(loading);
 		try {
 			let itemResult: T[];
 			let actionResult: Action<T | null>[];
@@ -91,7 +90,6 @@
 			console.error(error);
 		} finally {
 			loading = false;
-			console.log(loading);
 			selectedOptionIndex = items.length === 1 ? 0 : null;
 		}
 	}
