@@ -6,7 +6,7 @@
 
 	let items: number[] = [];
 
-	async function search(searchString: string) {
+	async function search(searchString: string): Promise<number[]> {
 		return searchString.length === 0
 			? items
 			: items.filter((item) => item.toString().includes(searchString));
@@ -47,10 +47,11 @@
 
 <Template let:args>
 	<div class="h-screen">
-		<AdvancedSelect bind:selected {actions} {search} {...args} let:item>
+		<AdvancedSelect bind:selected {actions} {search} display_loading {...args} let:item>
+			<!-- svelte-ignore  -->
 			{item.toString()}
 		</AdvancedSelect>
-		<AdvancedSelect bind:selected {actions} {search} {...args} let:item>
+		<AdvancedSelect bind:selected {actions} {search} display_loading {...args} let:item>
 			{item.toString()}
 		</AdvancedSelect>
 	</div>

@@ -15,6 +15,22 @@
 		{
 			name: 'Drei',
 			value: 3
+		},
+		{
+			name: 'Vier',
+			value: 4
+		},
+		{
+			name: 'Fünf',
+			value: 5
+		},
+		{
+			name: 'Sechs',
+			value: 6
+		},
+		{
+			name: 'Sieben',
+			value: 7
 		}
 	];
 

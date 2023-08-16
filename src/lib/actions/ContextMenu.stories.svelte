@@ -34,7 +34,7 @@
 
 <Meta title="Actions/ContextMenu" component={ContextMenu} />
 
-<Story name="Primary" let:args>
+<Story name="Primary">
 	<div class="p-2">
 		<ContextMenu {actions} />
 	</div>

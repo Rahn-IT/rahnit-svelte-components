@@ -6,6 +6,8 @@
 	import { flip } from 'svelte/animate';
 	import { createEventDispatcher } from 'svelte';
 
+	import ActionElement from '../actions/ActionElement.svelte';
+
 	import { debounce as deb } from 'lodash';
 	import type { Action } from './types.js';
 	import Icon from '../Icon.js';
@@ -13,7 +15,13 @@
 	import LoadingContainer from '../containers/LoadingContainer.svelte';
 	import ErrorAttachmentContainer from '../containers/ErrorAttachmentContainer.svelte';
 
-	type T = $$Generic<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+	type T = $$Generic<unknown>;
+
+	//eslint-disable-next-line @typescript-eslint/no-unused-vars
+	interface $$Slots {
+		// have to use any here, as generics don't yet work correctly on slots
+		default: { item: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+	}
 
 	export let selected: T | null;
 	export let search: ((searchString: string) => Promise<T[]>) | null = null;
@@ -24,6 +32,7 @@
 	export let required = false;
 	export let requiredErrorMessage = 'Required';
 	export let externalErrorMessage = '';
+	export let notFoundMessage = 'No Results for Search';
 
 	export let label = '';
 
@@ -49,7 +58,7 @@
 	$: {
 		if (!hasFocus) {
 			searchString = '';
-			selectedOptionIndex = -1;
+			selectedOptionIndex = null;
 		} else {
 			runSearch();
 		}
@@ -59,19 +68,31 @@
 
 	async function runSearch() {
 		loading = display_loading;
+		console.log(loading);
 		try {
+			let itemResult: T[];
+			let actionResult: Action<T | null>[];
+
 			if (search !== null) {
-				const result = await search(searchString);
-				items = result;
+				itemResult = await search(searchString);
+			} else {
+				itemResult = [];
 			}
+
 			if (actions !== null) {
-				actionList = await actions(searchString);
+				actionResult = await actions(searchString);
+			} else {
+				actionResult = [];
 			}
+
+			items = itemResult;
+			actionList = actionResult;
 		} catch (error) {
 			console.error(error);
 		} finally {
 			loading = false;
-			selectedOptionIndex = items.length === 1 ? 0 : -1;
+			console.log(loading);
+			selectedOptionIndex = items.length === 1 ? 0 : null;
 		}
 	}
 
@@ -91,27 +112,59 @@
 		}
 	}
 
-	let selectedOptionIndex = -1;
+	let selectedOptionIndex: number | null = null;
 	$: itemCount = items.length + actionList.length;
+
+	let itemOptions: (HTMLButtonElement | null)[] = [];
+	let itemContainer: HTMLDivElement | null = null;
 
 	let input: HTMLInputElement;
 
+	$: {
+		if (itemContainer !== null) {
+			if (
+				selectedOptionIndex !== null &&
+				itemOptions[selectedOptionIndex] !== undefined &&
+				itemOptions[selectedOptionIndex] !== null
+			) {
+				const element = itemOptions[selectedOptionIndex] as HTMLButtonElement;
+				const p = element.offsetParent as HTMLDivElement | null;
+				if (p !== null) {
+					itemContainer.scrollTo({
+						top: element.offsetTop + element.offsetHeight / 2 - p.offsetHeight / 2,
+						behavior: 'smooth'
+					});
+				}
+			} else {
+				itemContainer.scrollTo({ top: 0, behavior: 'smooth' });
+			}
+		}
+	}
+
 	function handleKeyBoardSelect(event: KeyboardEvent) {
-		if (!hasFocus) {
+		if (!hasFocus || itemCount < 1) {
 			return;
 		}
 
 		switch (event.key) {
 			case 'ArrowDown':
 				event.preventDefault();
-				selectedOptionIndex = (selectedOptionIndex + 1) % itemCount;
+				if (selectedOptionIndex === null) {
+					selectedOptionIndex = 0;
+				} else {
+					selectedOptionIndex = (selectedOptionIndex + 1) % itemCount;
+				}
 				break;
 			case 'ArrowUp':
 				event.preventDefault();
-				selectedOptionIndex = (selectedOptionIndex - 1 + itemCount) % itemCount;
+				if (selectedOptionIndex === null) {
+					selectedOptionIndex = itemCount - 1;
+				} else {
+					selectedOptionIndex = (selectedOptionIndex - 1 + itemCount) % itemCount;
+				}
 				break;
 			case 'Enter':
-				if (selectedOptionIndex !== -1) {
+				if (selectedOptionIndex !== null) {
 					if (selectedOptionIndex < items.length) {
 						select(items[selectedOptionIndex]);
 					} else {
@@ -124,43 +177,6 @@
 				input.blur();
 				break;
 		}
-	}
-
-	type ItemRender = {
-		key: string;
-		isItem: true;
-		item: T;
-	};
-
-	type ActionRender = {
-		key: string;
-		isItem: false;
-		action: Action<T | null>;
-	};
-
-	let toRender: (ItemRender | ActionRender)[] = [];
-	$: {
-		let irs: ItemRender[] = items.map((item: T) => {
-			let ir: ItemRender = {
-				key: itemKey(item),
-				isItem: true,
-				item: item
-			};
-			return ir;
-		});
-
-		let ars: ActionRender[] = actionList.map((action: Action<T | null>) => {
-			let ar: ActionRender = {
-				key: action.key,
-				isItem: false,
-				action: action
-			};
-			return ar;
-		});
-
-		let newRender: (ItemRender | ActionRender)[] = irs;
-
-		toRender = newRender.concat(ars);
 	}
 
 	let errorMessage: string = '';
@@ -216,7 +232,7 @@
 			<!-- Empty Selected -->
 			{#if !required && selected !== null}
 				<button
-					class="p-1 absolute h-full right-0 hover:text-error cursor-pointer transition-colors"
+					class="absolute right-0 h-full cursor-pointer p-1 transition-colors hover:text-error"
 					on:click={() => select(null)}
 				>
 					<Icon class=" h-full w-auto" icon={CloseIcon} />
@@ -225,54 +241,68 @@
 		</div>
 
 		<!-- Dropdown -->
-		{#if toRender.length > 0 && hasFocus}
+		{#if hasFocus}
 			<div
-				class="z-50 mt-1 flex w-full pl-4 absolute transition-opacity duration-200"
+				class="absolute z-50 mt-1 flex w-full pl-4 transition-opacity duration-200"
 				transition:fade={{ duration: 150 }}
 			>
 				<div
 					class="flex-1 overflow-hidden rounded-md border border-secondary bg-base-100 shadow-md transition-all duration-200"
-					style:height={hasFocus ? (loading ? '3rem' : toRender.length * 3 + 'rem') : '0'}
 				>
 					<LoadingContainer {loading}>
-						{#each toRender as render, i (render.key)}
-							<div
-								class="h-12 cursor-pointer px-4 hover:bg-base-300"
-								class:bg-base-300={selectedOptionIndex === i}
-								animate:flip={{
-									duration: 200
-								}}
-							>
-								{#if render.isItem}
-									{@const item = render.item}
-									<!-- svelte-ignore a11y-interactive-supports-focus -->
-									<div
+						<div class="max-h-60 overflow-y-scroll" bind:this={itemContainer}>
+							{#if items.length > 0}
+								{#each items as item, i (itemKey(item))}
+									<button
+										bind:this={itemOptions[i]}
 										role="option"
 										aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
-										class="flex h-full w-full items-center justify-start"
+										class:bg-base-300={selectedOptionIndex === i}
+										class="flex h-12 w-full cursor-pointer items-center justify-start px-4 hover:bg-base-300"
 										on:mousedown={() => select(item)}
+										animate:flip={{
+											duration: 200
+										}}
 									>
 										<slot {item} />
-									</div>
-								{:else}
-									{@const action = render.action}
-									<!-- svelte-ignore a11y-interactive-supports-focus -->
-									<div
-										role="option"
-										aria-selected={selectedOptionIndex === i ? 'true' : 'false'}
-										class="flex h-full w-full items-center justify-center"
+									</button>
+								{/each}
+							{:else}
+								<div
+									class="flex h-12 w-full cursor-pointer items-center justify-start px-4 hover:bg-base-300"
+								>
+									{notFoundMessage}
+								</div>
+							{/if}
+						</div>
+						<div class="border-t border-base-300 shadow-xl">
+							{#each actionList as action, i (action.key)}
+								<div
+									role="option"
+									aria-selected={(selectedOptionIndex ?? -1) - items.length === i
+										? 'true'
+										: 'false'}
+									class:bg-base-300={(selectedOptionIndex ?? -1) - items.length === i}
+									class="h-12 w-full cursor-pointer hover:bg-base-300"
+									animate:flip={{
+										duration: 200
+									}}
+								>
+									<ActionElement
+										{action}
+										class="flex h-full w-full items-center justify-start px-4"
 										on:mousedown={async () => runAction(action)}
 									>
 										{#if action.icon !== null}
-											<div class="h-full">
+											<div class="h-full p-1">
 												<Icon class="h-full w-auto" icon={action.icon} />
 											</div>
 										{/if}
 										{action.name}
-									</div>
-								{/if}
-							</div>
-						{/each}
+									</ActionElement>
+								</div>
+							{/each}
+						</div>
 					</LoadingContainer>
 				</div>
 			</div>
