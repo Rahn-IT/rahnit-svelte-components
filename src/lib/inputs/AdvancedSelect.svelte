@@ -266,9 +266,7 @@
 									</button>
 								{/each}
 							{:else}
-								<div
-									class="flex h-12 w-full cursor-pointer items-center justify-start px-4 hover:bg-base-300"
-								>
+								<div class="flex h-12 w-full items-center justify-start px-4">
 									{notFoundMessage}
 								</div>
 							{/if}
