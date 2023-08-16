@@ -48,7 +48,6 @@
 <Template let:args>
 	<div class="h-screen">
 		<AdvancedSelect bind:selected {actions} {search} display_loading {...args} let:item>
-			<!-- svelte-ignore  -->
 			{item.toString()}
 		</AdvancedSelect>
 		<AdvancedSelect bind:selected {actions} {search} display_loading {...args} let:item>
