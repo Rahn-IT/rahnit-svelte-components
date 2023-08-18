@@ -3,6 +3,11 @@
 	import MenuIcon from '@iconify-icons/mdi/menu.js';
 	import CloseIcon from '@iconify-icons/mdi/close.js';
 
+	export let leftOpenIcon = MenuIcon;
+	export let leftCloseIcon = CloseIcon;
+	export let rightOpenIcon = MenuIcon;
+	export let rightCloseIcon = CloseIcon;
+
 	let leftOpen = false;
 	let rightOpen = false;
 	export let allowLeft = true;
@@ -23,7 +28,7 @@
 
 				{#if allowLeft}
 					<div class="absolute -right-16 top-4 z-10">
-						<ToggleButton bind:value={leftOpen} off_icon={MenuIcon} on_icon={CloseIcon} />
+						<ToggleButton bind:value={leftOpen} off_icon={leftOpenIcon} on_icon={leftCloseIcon} />
 					</div>
 				{/if}
 			</div>
@@ -45,7 +50,11 @@
 
 				{#if allowRight}
 					<div class="absolute -left-16 top-4 z-10">
-						<ToggleButton bind:value={rightOpen} off_icon={MenuIcon} on_icon={CloseIcon} />
+						<ToggleButton
+							bind:value={rightOpen}
+							off_icon={rightOpenIcon}
+							on_icon={rightCloseIcon}
+						/>
 					</div>
 				{/if}
 			</div>
