@@ -108,7 +108,7 @@
 			style:left="{posX}px"
 			style:top="{posY}px"
 		>
-			<div class="flex justify-center items-center">
+			<div class="flex items-center justify-center">
 				<button class="w-12 cursor-grabbing p-1 opacity-30">
 					<Icon icon={DragIcon} class="h-auto w-full" />
 				</button>
@@ -117,7 +117,7 @@
 				<slot item={items[dragging]} index={dragging} />
 			</div>
 			{#if editable}
-				<div class="flex justify-center items-center">
+				<div class="flex items-center justify-center">
 					<button class="w-12 cursor-pointer p-1 hover:text-error">
 						<Icon icon={RemoveIcon} class="h-auto w-full" />
 					</button>
@@ -142,7 +142,7 @@
 					out:send={{ key: index }}
 				>
 					{#if sortable}
-						<div class="flex justify-center items-center">
+						<div class="flex items-center justify-center">
 							<button
 								class="w-12 cursor-grab p-1 opacity-30"
 								on:mousedown={(event) => grab(index, event)}
@@ -155,7 +155,7 @@
 						<slot {item} {index} />
 					</div>
 					{#if editable}
-						<div class="flex justify-center items-center">
+						<div class="flex items-center justify-center">
 							<button
 								class="w-12 cursor-pointer p-1 hover:text-error"
 								on:click={() => removeItem(index)}
@@ -176,7 +176,7 @@
 			<div class="flex-1 py-3 pl-2">
 				<div class="flex w-full justify-center">
 					<button
-						class="h-10 w-32 cursor-pointer text-center rounded-md border border-secondary transition-all duration-500 hover:w-full hover:text-secondary-focus"
+						class="h-10 w-32 cursor-pointer rounded-md border border-secondary text-center transition-all duration-500 hover:w-full hover:text-secondary-focus"
 						on:click={() => addItem()}
 					>
 						<Icon icon={AddIcon} class="h-full w-full" />

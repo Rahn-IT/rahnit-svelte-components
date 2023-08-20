@@ -38,7 +38,7 @@
 			month = null;
 			year = null;
 			return;
-		};
+		}
 
 		const parsedDate = new Date(value);
 		if (isNaN(parsedDate.getTime())) {
@@ -90,7 +90,7 @@
 	}
 </script>
 
-<div class="w-full relative">
+<div class="relative w-full">
 	<span
 		class="text-text pointer-events-none absolute left-16 top-0 z-10 bg-base-100 px-1.5 text-xs"
 	>
@@ -101,7 +101,7 @@
 		<div class="flex flex-row gap-2">
 			<div class="w-12 flex-shrink-0 pt-2">
 				<button class=" w-full text-accent hover:text-accent-focus">
-					<Icon class="w-full h-auto" icon={CalendarIcon} />
+					<Icon class="h-auto w-full" icon={CalendarIcon} />
 				</button>
 			</div>
 			<DayInput
@@ -117,7 +117,7 @@
 			{#if !required}
 				<div class="w-10 flex-shrink-0 pt-3">
 					<button class=" w-full text-base-content hover:text-error" on:click={() => empty()}>
-						<Icon class="w-full h-auto" icon={CloseIcon} />
+						<Icon class="h-auto w-full" icon={CloseIcon} />
 					</button>
 				</div>
 			{/if}

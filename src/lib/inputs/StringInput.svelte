@@ -40,7 +40,7 @@
 			on:focus
 			on:blur
 		/>
-		<label for={id} class="pointer-events-none absolute left-4 top-0 transition-all text-xs">
+		<label for={id} class="pointer-events-none absolute left-4 top-0 text-xs transition-all">
 			{label}
 		</label>
 	</div>

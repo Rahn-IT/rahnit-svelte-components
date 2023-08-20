@@ -103,10 +103,10 @@
 	<div class="p-4">
 		<div class="mb-2 flex flex-row items-center justify-center">
 			<button
-				class="h-full w-8 focus:outline-none mb-3 transition-colors hover:bg-secondary-focus rounded"
+				class="mb-3 h-full w-8 rounded transition-colors hover:bg-secondary-focus focus:outline-none"
 				on:click={decrementMonth}
 			>
-				<Icon class="w-full h-auto" icon={LeftIcon} />
+				<Icon class="h-auto w-full" icon={LeftIcon} />
 			</button>
 			<div class="w-36 px-1">
 				<MonthInput bind:value={month} required />
@@ -115,10 +115,10 @@
 				<YearInput bind:value={year} {pastOnly} required />
 			</div>
 			<button
-				class="h-full w-8 focus:outline-none mb-3 transition-colors hover:bg-secondary-focus rounded"
+				class="mb-3 h-full w-8 rounded transition-colors hover:bg-secondary-focus focus:outline-none"
 				on:click={incrementMonth}
 			>
-				<Icon class="w-full h-auto" icon={RightIcon} />
+				<Icon class="h-auto w-full" icon={RightIcon} />
 			</button>
 		</div>
 		<div class="grid grid-cols-7 [&>*]:p-2">
@@ -142,7 +142,7 @@
 			{/each}
 			{#each currentDaysArray as day}
 				<button
-					class="hover:text w-full rounded-md text-center duration-200 transition-colors hover:bg-secondary hover:text-secondary-content focus:outline-none {day ===
+					class="hover:text w-full rounded-md text-center transition-colors duration-200 hover:bg-secondary hover:text-secondary-content focus:outline-none {day ===
 						selectedDay &&
 					month === selectedMonth &&
 					year === selectedYear

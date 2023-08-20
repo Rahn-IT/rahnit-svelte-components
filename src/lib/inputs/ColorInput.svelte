@@ -82,7 +82,7 @@
 			on:keydown={updateFromInput}
 		/>
 		<div class="absolute right-0 flex h-full w-12 items-center justify-center">
-			<input class="h-8 w-8 border cursor-pointer" type="color" bind:value bind:this={colorInput} />
+			<input class="h-8 w-8 cursor-pointer border" type="color" bind:value bind:this={colorInput} />
 		</div>
 	</div>
 </div>

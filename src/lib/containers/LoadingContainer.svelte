@@ -4,7 +4,7 @@
 
 {#if loading}
 	<div class="relative h-full w-full">
-		<div class="h-20 w-20"></div>
+		<div class="h-20 w-20" />
 		<div
 			class="absolute top-0 flex h-full w-full flex-col flex-wrap content-center items-center justify-center gap-4 p-2"
 		>
