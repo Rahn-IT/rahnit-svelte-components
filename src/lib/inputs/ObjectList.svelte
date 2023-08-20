@@ -128,6 +128,7 @@
 
 	<!-- Items -->
 	{#each items as item, index (itemKey(item))}
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div
 			class="pointer-events-auto"
 			animate:flip={{ duration: 200 }}
