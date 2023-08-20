@@ -9,6 +9,7 @@ export { default as YearInput } from './inputs/date/YearInput.svelte';
 export { default as DraggableContainer } from './containers/DraggableContainer.svelte';
 export { default as SideMenuContainer } from './containers/SideMenuContainer.svelte';
 export { default as LoadingContainer } from './containers/LoadingContainer.svelte';
+export { default as LockingContainer } from './containers/LockingContainer.svelte';
 export { default as ColorInput } from './inputs/ColorInput.svelte';
 export { default as DateInput } from './inputs/date/DateInput.svelte';
 export { default as DateTimeInput } from './inputs/date/DateTimeInput.svelte';
