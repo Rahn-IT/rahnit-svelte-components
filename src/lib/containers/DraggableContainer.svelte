@@ -185,7 +185,6 @@
 
 <svelte:window on:mouseup|capture={handleMouseUp} on:mousemove={handleMouseMove} />
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class="relative h-full w-full overflow-hidden {isDragging ? 'cursor-grabbing' : 'cursor-move'}"
 	on:mousedown={handleMouseDown}
