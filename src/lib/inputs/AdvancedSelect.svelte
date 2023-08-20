@@ -45,17 +45,19 @@
 
 	$: searchFunc = debounce ? deb(runSearch, 500) : runSearch;
 
-	$: {
+	let searchString = '';
+	let hasFocus = false;
+
+	$: handleSearchChange(searchString);
+	function handleSearchChange(searchString: string) {
 		searchString;
 		if (hasFocus) {
 			searchFunc();
 		}
 	}
 
-	let searchString = '';
-	let hasFocus = false;
-
-	$: {
+	$: handleFocusChange(hasFocus);
+	function handleFocusChange(hasFocus: boolean) {
 		if (!hasFocus) {
 			searchString = '';
 			selectedOptionIndex = null;
@@ -67,6 +69,7 @@
 	let loading = false;
 
 	async function runSearch() {
+		console.log('runSearch');
 		loading = display_loading;
 		try {
 			let itemResult: T[];
