@@ -69,7 +69,6 @@
 	let loading = false;
 
 	async function runSearch() {
-		console.log('runSearch');
 		loading = display_loading;
 		try {
 			let itemResult: T[];
